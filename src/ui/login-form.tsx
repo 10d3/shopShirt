@@ -25,12 +25,18 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 									<Label htmlFor="email">Email</Label>
 									<Input name="email" type="email" placeholder="m@example.com" required />
 								</div>
-								<div className="grid gap-2">
+								{/* <div className="grid gap-2">
 									<Label htmlFor="password">Password</Label>
 									<Input name="password" type="password" required />
-								</div>
+								</div> */}
 								<Button type="submit" className="w-full">
 									Login
+								</Button>
+							</div>
+							<p className="text-center text-xs text-muted-foreground">or</p>
+							<div className="grid gap-2">
+								<Button variant="outline" className="w-full">
+									Login with Google
 								</Button>
 							</div>
 						</div>
