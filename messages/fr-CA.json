@@ -32,7 +32,7 @@
 	"Global.deliveryEstimates.week": "{count, plural, =1 {# semaine} other {# semaines}}",
 	"Global.actions.shopNow": "Magasinez maintenant",
 	"/.hero.title": "Montrez votre amour pour Fort-Liberté, où que vous alliez",
-	"/.hero.description": "Explorez une collection unique qui met en valeur l’histoire, la culture et la beauté de Fort-Liberté. Faites partie de ceux qui partagent leur fierté partout dans le monde.",
+	"/.hero.description": "Des T-shirts et accessoires uniques qui célèbrent la culture, l'histoire et la fierté de Fort-Liberté.",
 	"/.hero.action": "Découvrir maintenant",
 	"/.hero.link": "/category/accessoires",
 	"/search.notFound.title": "Aucun résultat trouvé pour « {query} »",
