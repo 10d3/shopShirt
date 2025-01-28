@@ -50,8 +50,8 @@ export default async function Home() {
 
 			<section className="w-full py-8">
 				<div className="grid gap-8 lg:grid-cols-2">
-					{StoreConfig.categories.map(({ slug, image: src }) => (
-						<CategoryBox key={slug} categorySlug={slug} src={src} />
+					{StoreConfig.categories.map(({ name, slug, image: src }) => (
+						<CategoryBox key={slug} name={name} categorySlug={slug} src={src} />
 					))}
 				</div>
 			</section>

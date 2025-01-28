@@ -3,8 +3,9 @@ import ApparelImage from "@/images/apparel.jpg";
 
 export const config = {
 	categories: [
-		{ name: "Apparel", slug: "apparel", image: ApparelImage },
-		{ name: "Accessories", slug: "accessories", image: AccessoriesImage },
+		{ name: "Mode inspirée de Fort-Liberté", slug: "heritage", image: ApparelImage },
+		{ name: "Accessoires qui font la différence", slug: "essentiels", image: AccessoriesImage },
+		{ name: "Souvenirs emblématiques", slug: "memoires", image: AccessoriesImage },
 	],
 
 	social: {

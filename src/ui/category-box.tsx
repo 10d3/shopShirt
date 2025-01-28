@@ -6,9 +6,11 @@ import Image, { type ImageProps } from "next/image";
 export async function CategoryBox({
 	categorySlug,
 	src,
+	name,
 }: {
 	categorySlug: string;
 	src: ImageProps["src"];
+	name: string;
 }) {
 	const t = await getTranslations("Global.actions");
 
@@ -23,7 +25,7 @@ export async function CategoryBox({
 				/>
 			</div>
 			<div className="justify-end gap-2 px-4 py-2 text-neutral-600">
-				<h3 className="text-lg font-bold tracking-tight">{deslugify(categorySlug)}</h3>
+				<h3 className="text-lg font-bold tracking-tight">{deslugify(name)}</h3>
 				<p>{t("shopNow")}</p>
 			</div>
 		</YnsLink>

@@ -8,13 +8,13 @@ const links = [
 		href: "/",
 	},
 	...StoreConfig.categories.map(({ name, slug }) => ({
-		label: name,
+		label: slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase(),
 		href: `/category/${slug}`,
 	})),
-	{
-		label: "Digital",
-		href: "/category/digital",
-	},
+	// {
+	// 	label: "Digital",
+	// 	href: "/category/digital",
+	// },
 ];
 
 export const NavMenu = () => {
