@@ -31,7 +31,7 @@
 	"Global.deliveryEstimates.month": "{count, plural, =1 {# mois} other {# mois}}",
 	"Global.deliveryEstimates.week": "{count, plural, =1 {# semaine} other {# semaines}}",
 	"Global.actions.shopNow": "Magasinez maintenant",
-	"/.hero.title": "Montrez votre amour pour Fort-Liberté, où que vous alliez",
+	"/.hero.title": "Montrez votre amour pour Fort-Liberté, où que vous alliez !",
 	"/.hero.description": "Des T-shirts et accessoires uniques qui célèbrent la culture, l'histoire et la fierté de Fort-Liberté.",
 	"/.hero.action": "Découvrir maintenant",
 	"/.hero.link": "/category/accessoires",

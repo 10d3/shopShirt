@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { signIn } from "next-auth/react";
 import { useActionState } from "react";
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
@@ -33,14 +34,18 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 									Login
 								</Button>
 							</div>
-							<p className="text-center text-xs text-muted-foreground">or</p>
-							<div className="grid gap-2">
-								<Button variant="outline" className="w-full">
-									Login with Google
-								</Button>
-							</div>
 						</div>
 					</form>
+					<p className="text-center text-xs text-muted-foreground py-4">or</p>
+					<div className="grid gap-2">
+						<Button
+							variant="outline"
+							className="w-full hover:cursor-pointer"
+							onClick={() => signIn("google", { callbackUrl: `/` })}
+						>
+							Login with Google
+						</Button>
+					</div>
 				</CardContent>
 			</Card>
 			<div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">

@@ -8,43 +8,56 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOutAction } from "@/lib/auth/auth.action";
-import { DollarSign, LogOut, Settings, User } from "lucide-react";
-import Link from "next/link";
+import { YnsLink } from "@/ui/yns-link";
+import { LogOut, ShoppingBasket } from "lucide-react";
 import type { PropsWithChildren } from "react";
 
 export type SignOutButtonProps = PropsWithChildren;
 
 export const SignOutButton = (props: SignOutButtonProps) => {
+	const handleSignOut = async () => {
+		// Optionally show a loading state or confirmation dialog here
+		await signOutAction();
+		// Optionally show a success message or redirect
+	};
+
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>{props.children}</DropdownMenuTrigger>
-			<DropdownMenuContent>
-				<DropdownMenuLabel>My Account</DropdownMenuLabel>
+			<DropdownMenuTrigger className="hover:cursor-pointer" asChild>
+				{props.children}
+			</DropdownMenuTrigger>
+			<DropdownMenuContent className="bg-white shadow-lg rounded-md">
+				<DropdownMenuLabel className="font-semibold text-gray-800">My Account</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<Link className="flex flex-row gap-1 items-center" href="/home/profile">
-						<User size={15} /> Profile
-					</Link>
+					<YnsLink
+						href="/home/profile"
+						className="flex flex-row gap-2 items-center hover:bg-gray-100 p-2 rounded-md transition-colors"
+					>
+						<ShoppingBasket className="size-4" />
+						<span>Orders</span>
+					</YnsLink>
 				</DropdownMenuItem>
-				<DropdownMenuItem>
-					<Link className="flex flex-row gap-1 items-center" href="/home/profile">
+				{/* Uncomment and enhance as needed */}
+				{/* <DropdownMenuItem>
+					<Link className="flex flex-row gap-2 items-center hover:bg-gray-100 p-2 rounded-md transition-colors" href="/home/profile">
 						<DollarSign size={15} /> Billing
 					</Link>
-				</DropdownMenuItem>
+				</DropdownMenuItem> */}
 				{/* <DropdownMenuItem>Team</DropdownMenuItem> */}
-				<DropdownMenuItem>
-					<Link className="flex flex-row gap-1 items-center" href="/home/settings">
+				{/* <DropdownMenuItem>
+					<Link className="flex flex-row gap-2 items-center hover:bg-gray-100 p-2 rounded-md transition-colors" href="/home/settings">
 						<Settings size={15} />
 						Settings
 					</Link>
-				</DropdownMenuItem>
+				</DropdownMenuItem> */}
 				<DropdownMenuItem
-					onClick={() => {
-						signOutAction();
-					}}
+					onClick={handleSignOut}
+					className="text-red-600 hover:bg-red-100 p-2 rounded-md transition-colors cursor-pointer"
+					aria-label="Sign Out"
 				>
 					<LogOut size={15} className="mr-2" />
-					sign out
+					<span>Sign Out</span>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

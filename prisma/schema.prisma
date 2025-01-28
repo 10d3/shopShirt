@@ -13,6 +13,7 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  role          Role            @default(User)
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -75,4 +76,9 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+enum Role {
+  User
+  Admin
 }
