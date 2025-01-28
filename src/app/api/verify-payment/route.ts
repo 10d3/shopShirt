@@ -12,7 +12,10 @@ export async function POST(req: Request) {
 		return new Response("Missing parameters", { status: 400 });
 	}
 
+	console.log(txdNum, amountNum, senderNum);
+
 	//we gonna verify if their txd, amount and sender are in the db
 	//if they are, we gonna return true
 	//if they are not, we gonna return false
+	return Response.json({ success: true });
 }
