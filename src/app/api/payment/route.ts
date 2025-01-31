@@ -1,3 +1,5 @@
+import { prisma } from "@/lib/prisma";
+
 export async function POST(req: Request) {
 	const { txd, amount, sender } = (await req.json()) as { txd: string; amount: string; sender: string };
 
@@ -10,5 +12,20 @@ export async function POST(req: Request) {
 		return new Response("Missing parameters", { status: 400 });
 	}
 
-	//we gonna store them in a db later using prisma
+	try {
+		await prisma.verification.create({
+			data: {
+				txd: txd,
+				amount: amountNum,
+				sender: sender,
+				paymentMethod: "local",
+			},
+		});
+		return new Response("Payment adding success", { status: 200 });
+	} catch (error) {
+		console.log(error);
+		return new Response("Error creating payment", { status: 500 });
+	}
+
+	// return new Response("Payment verified", { status: 200 });
 }

@@ -1,5 +1,7 @@
 //we gonna make a post endpoind to verify a payment if the txd, amount and sender are in the db
 
+import { prisma } from "@/lib/prisma";
+
 export async function POST(req: Request) {
 	const { txd, amount, sender } = (await req.json()) as { txd: string; amount: string; sender: string };
 
@@ -17,5 +19,31 @@ export async function POST(req: Request) {
 	//we gonna verify if their txd, amount and sender are in the db
 	//if they are, we gonna return true
 	//if they are not, we gonna return false
-	return Response.json({ success: true });
+
+	const payment = await prisma.verification.findUnique({
+		where: {
+			txd: txd,
+			amount: amountNum,
+			sender: sender,
+		},
+	});
+
+	console.log(payment);
+
+	if (!payment) {
+		return Response.json({ isVerified: false });
+	}
+
+	switch (payment.status) {
+		case "pending":
+			return Response.json({ isVerified: true });
+			break;
+		case "success":
+			return Response.json({ isVerified: false });
+			break;
+		default:
+			break;
+	}
+
+	// return Response.json({ success: true });
 }
