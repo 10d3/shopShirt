@@ -1,3 +1,4 @@
+// Database configuration
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -7,39 +8,61 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  content   String   @db.Text
-  excerpt   String?  @db.Text
-  published Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  authorId  String // Foreign key to User
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  @@index([authorId])
-  @@map("posts")
-}
-
+// USER MODEL
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  role          Role            @default(User)
-  accounts      Account[]
-  sessions      Session[]
-  post          Post[]
-  // Optional for WebAuthn support
-  Authenticator Authenticator[]
+  id             String          @id @default(cuid())
+  name           String?
+  email          String          @unique
+  phone          String?         @unique // Needed for local payment matching
+  emailVerified  DateTime?
+  image          String?
+  role           Role            @default(User)
+  accounts       Account[]
+  sessions       Session[]
+  orders         Order[]
+  authenticators Authenticator[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+// ORDER MODEL
+model Order {
+  id           String        @id @default(uuid())
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id])
+  phone        String? // Used to match local payments if user is not registered
+  status       String        @default("pending") // pending, processing, shipped, delivered
+  totalAmount  Decimal
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  items        OrderItem[]
+  verification Verification?
+}
+
+// ORDER ITEM MODEL
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  quantity  Int
+  price     Decimal
+}
+
+// PAYMENT VERIFICATION MODEL (for local payments)
+model Verification {
+  id            String  @id @default(cuid())
+  txd           String  @unique // Transaction ID from SMS
+  amount        Float
+  sender        String // Phone number sending the payment
+  paymentMethod String // Stripe, USSD, etc.
+  status        String  @default("pending") // pending, success, unmatched
+  orderId       String? @unique
+  order         Order?  @relation(fields: [orderId], references: [id])
+}
+
+// ACCOUNT MODEL (For OAuth & Stripe)
 model Account {
   userId            String
   type              String
@@ -61,6 +84,7 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
+// SESSION MODEL (For Authentication)
 model Session {
   sessionToken String   @unique
   userId       String
@@ -71,6 +95,7 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
+// EMAIL VERIFICATION
 model VerificationToken {
   identifier String
   token      String
@@ -79,7 +104,7 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
-// Optional for WebAuthn support
+// OPTIONAL: WEB AUTHENTICATION SUPPORT
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -95,6 +120,7 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
+// USER ROLES ENUM
 enum Role {
   User
   Admin

@@ -10,7 +10,7 @@ export default async function DashboardPage({
 }: {
 	searchParams: { step?: string; id?: string };
 }) {
-	const searchP = await searchParams;
+	const searchP = searchParams;
 	const currentStep = searchP.step || "dashboard";
 	const editId = searchP.id;
 
