@@ -8,9 +8,9 @@ import ProductList from "./_components/product-list";
 export default async function DashboardPage({
 	searchParams,
 }: {
-	searchParams: { step?: string; id?: string };
+	searchParams: Promise<{ step?: string; id?: string }>;
 }) {
-	const searchP = searchParams;
+	const searchP = await searchParams;
 	const currentStep = searchP.step || "dashboard";
 	const editId = searchP.id;
 
