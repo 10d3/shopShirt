@@ -1,8 +1,8 @@
 import { publicUrl } from "@/env.mjs";
 import { getTranslations } from "@/i18n/server";
+import { productBrowse } from "@/lib/kit/commerce";
 import { deslugify } from "@/lib/utils";
 import { ProductList } from "@/ui/products/product-list";
-import * as Commerce from "commerce-kit";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next/types";
 
@@ -10,7 +10,7 @@ export const generateMetadata = async (props: {
 	params: Promise<{ slug: string }>;
 }): Promise<Metadata> => {
 	const params = await props.params;
-	const products = await Commerce.productBrowse({
+	const products = await productBrowse({
 		first: 100,
 		filter: { category: params.slug },
 	});
@@ -31,10 +31,13 @@ export default async function CategoryPage(props: {
 	params: Promise<{ slug: string }>;
 }) {
 	const params = await props.params;
-	const products = await Commerce.productBrowse({
+	console.log(params.slug);
+	const products = await productBrowse({
 		first: 100,
 		filter: { category: params.slug },
 	});
+
+	console.log("products", products);
 
 	if (products.length === 0) {
 		return notFound();
@@ -46,7 +49,9 @@ export default async function CategoryPage(props: {
 		<main className="pb-8">
 			<h1 className="text-3xl font-bold leading-none tracking-tight text-foreground">
 				{deslugify(params.slug)}
-				<div className="text-lg font-semibold text-muted-foreground">{t("title")}</div>
+				<div className="text-lg font-semibold text-muted-foreground">
+					{t("title", { categoryName: deslugify(params.slug) })}
+				</div>
 			</h1>
 			<ProductList products={products} />
 		</main>

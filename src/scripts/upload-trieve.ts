@@ -17,7 +17,7 @@ if (!datasetId || !apiKey) {
 
 export const trieve = new TrieveSDK({ apiKey, datasetId });
 
-const stripe = Commerce.provider({
+export const stripe = Commerce.provider({
 	secretKey: env.STRIPE_SECRET_KEY,
 	tagPrefix: undefined,
 });
@@ -27,6 +27,8 @@ const data = await stripe.products.list({
 	active: true,
 	expand: ["data.default_price"],
 });
+
+console.log("Found", data.data.length, "products");
 const chunks = mapProducts(data).flatMap((product): ChunkReqPayload | ChunkReqPayload[] => {
 	if (!product.default_price.unit_amount) {
 		return [];
@@ -51,6 +53,7 @@ Description: ${product.description}
 			image_url: product.images[0],
 			amount: product.default_price.unit_amount,
 			currency: product.default_price.currency,
+			category: product.metadata.category,
 		} satisfies TrieveProductMetadata,
 	};
 });
@@ -66,4 +69,5 @@ export type TrieveProductMetadata = {
 	image_url: string | undefined;
 	amount: number;
 	currency: string;
+	category: string | undefined;
 };

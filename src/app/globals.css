@@ -266,3 +266,46 @@ input[type="search" i]::-webkit-search-cancel-button {
 		opacity: 100%;
 	}
 }
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+	background: hsl(var(--border));
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: hsl(var(--primary));
+}
+
+/* Selection styles */
+.ProseMirror p::selection {
+	background: hsl(var(--primary) / 0.2);
+}
+
+/* Image resize handle */
+img.resizable::after {
+	content: "";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 1rem;
+	height: 1rem;
+	background: hsl(var(--primary));
+	cursor: nwse-resize;
+	clip-path: polygon(100% 0, 0 100%, 100% 100%);
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+img.resizable:hover::after {
+	opacity: 1;
+}
