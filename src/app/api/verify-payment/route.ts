@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
 	switch (payment.status) {
 		case "pending":
-			return Response.json({ isVerified: true });
+			return Response.json({ isVerified: true, verificationId: payment.id });
 			break;
 		case "success":
 			return Response.json({ isVerified: false });

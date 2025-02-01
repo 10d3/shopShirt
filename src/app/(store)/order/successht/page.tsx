@@ -15,6 +15,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 export default async function OrderDetailsPage(props: { searchParams: Promise<{ order_id?: string }> }) {
 	const search = await props.searchParams;
+	console.log(search.order_id);
 	if (!search.order_id) {
 		return <div>Invalid order ID</div>;
 	}

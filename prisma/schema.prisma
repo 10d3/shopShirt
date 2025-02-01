@@ -34,6 +34,7 @@ model Order {
   phone        String? // Used to match local payments if user is not registered
   status       String        @default("pending") // pending, processing, shipped, delivered
   totalAmount  Decimal
+  pointOfSales String?       @default("YonCell Multi-Service")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   items        OrderItem[]

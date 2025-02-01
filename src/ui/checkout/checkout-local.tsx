@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createOrder } from "@/lib/actions/order";
 import {
 	Select,
 	SelectContent,
@@ -50,12 +51,26 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 
 			if (!response.ok) throw new Error("Network response was not ok");
 
-			const data = (await response.json()) as { isVerified: boolean };
+			const data = (await response.json()) as { isVerified: boolean; verificationId: string };
 			setPaymentStatus(data.isVerified ? "success" : "error");
+			const dataFromFormData = {
+				txd: transactionId,
+				amount: amountUTGN.toString(),
+				phone: senderNum,
+				pointRelais: relais,
+				status: paymentStatus,
+				verificationId: data.verificationId,
+			};
 			// return data.isVerified;
 			if (data.isVerified) {
 				await clearCartCookieAction();
-				router.push("/order/successht");
+				const test = transformOrderDataToPrisma({ cart, data: dataFromFormData });
+				const order = await createOrder(test);
+				if (!order) {
+					return false;
+				}
+				console.log(test);
+				router.push("/order/successht?order_id=" + order.id);
 			}
 		} catch (error) {
 			console.error("Payment verification failed:", error);
@@ -87,7 +102,7 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 				</div>
 
 				<div className="bg-muted p-4 rounded-md">
-					<p className="font-mono text-lg font-bold">{`*202*509XXXXXXXX*${amountUTGN}*codeSecert#`}</p>
+					<p className="font-mono md:text-lg text-[1rem] font-bold">{`*202*509XXXXXXXX*${amountUTGN}*codeSecert#`}</p>
 				</div>
 
 				{paymentStatus !== "idle" && (
@@ -163,3 +178,33 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 		</Card>
 	);
 };
+
+export function transformOrderDataToPrisma({
+	cart,
+	data,
+}: {
+	cart: Commerce.Cart; // Updated to use the correct input type
+	data: {
+		phone: string;
+		status: string;
+		verificationId: string;
+		pointRelais: string;
+	};
+}) {
+	return {
+		//   userId: data.userId, // Ensure userId is included
+		pointRelais: data.pointRelais,
+		phone: data.phone,
+		status: data.status,
+		verificationId: data.verificationId, // Include verificationId
+		totalAmount: cart.cart.amount,
+		items: cart.lines.map((item) => ({
+			productId: item.product.id,
+			productImage: item.product.images[0],
+			productName: item.product.name,
+			quantity: item.quantity,
+			price: item.product.default_price.unit_amount ?? 0,
+			digitalAssetUrl: item.product.metadata.digitalAsset,
+		})),
+	};
+}

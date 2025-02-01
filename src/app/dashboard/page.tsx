@@ -33,6 +33,7 @@ export default async function DashboardPage({
 							{ name: "Dashboard", key: "dashboard", icon: LayoutDashboard },
 							{ name: "Blog Posts", key: "blog", icon: FileText },
 							{ name: "Products", key: "products", icon: Box },
+							// { name: "Orders Management", key: "management", icon: CarFront },
 							{ name: "Settings", key: "settings", icon: Settings },
 						].map((item) => (
 							<a
@@ -64,6 +65,8 @@ export default async function DashboardPage({
 							products={products as { id: string; name: string; prices: { unit_amount: number }[] }[]}
 						/>
 					)}
+
+					{/* {currentStep === "management" && <OrderManagementPage/>} */}
 
 					{currentStep === "dashboard" && (
 						<div className="text-center py-12">
