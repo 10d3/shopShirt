@@ -6,8 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "@/ui/shadcn/select";
+// import { SelectContent, SelectLabel, SelectValue } from "@radix-ui/react-select";
 import type * as Commerce from "commerce-kit";
-import { CreditCard, Loader2, Phone } from "lucide-react";
+import { CreditCard, Loader2, MapPin, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useActionState } from "react";
@@ -24,12 +34,18 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 	async function verifyPayment(prevState: unknown, formData: FormData) {
 		const transactionId = formData.get("transactionId") as string;
 		const senderNum = formData.get("senderNum") as string;
+		const relais = formData.get("pointRelais") as string;
+		console.log(transactionId, senderNum, relais);
 
 		try {
 			const response = await fetch("/api/verify-payment", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ txd: transactionId, amount: amountUTGN.toString(), sender: senderNum }),
+				body: JSON.stringify({
+					txd: transactionId,
+					amount: amountUTGN.toString(),
+					sender: senderNum,
+				}),
 			});
 
 			if (!response.ok) throw new Error("Network response was not ok");
@@ -37,8 +53,10 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 			const data = (await response.json()) as { isVerified: boolean };
 			setPaymentStatus(data.isVerified ? "success" : "error");
 			// return data.isVerified;
-			await clearCartCookieAction();
-			router.push("/order/successht");
+			if (data.isVerified) {
+				await clearCartCookieAction();
+				router.push("/order/successht");
+			}
 		} catch (error) {
 			console.error("Payment verification failed:", error);
 			setPaymentStatus("error");
@@ -46,7 +64,7 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 		}
 	}
 
-	const [state, formAction, isPending] = useActionState(verifyPayment, null);
+	const [isPending, formAction] = useActionState(verifyPayment, null);
 
 	return (
 		<Card className="w-full max-w-md mx-auto">
@@ -111,8 +129,26 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 							required
 						/>
 					</div>
+					<div className="space-y-2">
+						<Label htmlFor="pointRelais" className="flex items-center space-x-2">
+							<MapPin className="w-4 h-4" />
+							<span>Point de relais</span>
+						</Label>
+						<Select defaultValue="1" name="pointRelais" required>
+							<SelectTrigger>
+								<SelectValue placeholder={"Choisir un point de relais"} />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Choisir un point de relais</SelectLabel>
+									<SelectItem value="1">Point de relais 1</SelectItem>
+									<SelectItem value="2">Point de relais 2</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</div>
 
-					<Button type="submit" className="w-full" disabled={isPending}>
+					<Button type="submit" className="w-full" disabled={isPending as boolean}>
 						{isPending ? (
 							<>
 								<Loader2 className="mr-2 h-4 w-4 animate-spin" />

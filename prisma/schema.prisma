@@ -42,12 +42,16 @@ model Order {
 
 // ORDER ITEM MODEL
 model OrderItem {
-  id        String  @id @default(uuid())
-  orderId   String
-  order     Order   @relation(fields: [orderId], references: [id])
-  productId String
-  quantity  Int
-  price     Decimal
+  id                 String  @id @default(uuid())
+  orderId            String
+  order              Order   @relation(fields: [orderId], references: [id])
+  productId          String
+  productName        String
+  productDescription String?
+  productImage       String?
+  digitalAssetUrl    String?
+  quantity           Int
+  price              Decimal
 }
 
 // PAYMENT VERIFICATION MODEL (for local payments)

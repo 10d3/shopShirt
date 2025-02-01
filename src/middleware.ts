@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { decrypt, updateSession } from "./lib/auth";
 
-const ProtectedPaths = ["/orders"];
+const ProtectedPaths = [""];
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
