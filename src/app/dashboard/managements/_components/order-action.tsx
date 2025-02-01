@@ -42,7 +42,7 @@ export function OrderActions({
 					<Link href={`/admin/orders/${order.id}`}>View Details</Link>
 				</DropdownMenuItem>
 				{(order.status === "received" || order.status === "idle") && (
-					<DropdownMenuItem onSelect={() => handleStatusUpdate("preparing")}>
+					<DropdownMenuItem disabled={isPending} onSelect={() => handleStatusUpdate("preparing")}>
 						Start Preparing
 					</DropdownMenuItem>
 				)}
