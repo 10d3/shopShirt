@@ -87,7 +87,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
 
 		await resend.emails.send({
 			// from: "POS System <pos@yourdomain.com>",
-			from: "POS System <pos.fort&fier.com>",
+			from: "POS System <pos@fortetfier.com>",
 			to: order.user.email,
 			subject: subjectMap[status as keyof typeof subjectMap] || subjectMap.default,
 			react: OrderStatusEmail({ order, status }),
