@@ -55,7 +55,7 @@ export default function OrderStatusEmail({ order, status }: OrderStatusEmailProp
 					<tr>
 						<td style={{ textAlign: "center", padding: "0 0 32px" }}>
 							<img
-								src="https://fortetfier.com/logoxl.svg"
+								src="https://cb1u117vvu.ufs.sh/f/4lPHsyh67qxbFHeKAlofmo5ahkcYyOpiAl7tNeRWJ9ISnbGT"
 								alt="Fort&Fier Logo"
 								style={{ maxWidth: "150px", height: "auto" }}
 							/>
