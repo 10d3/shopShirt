@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/prisma";
 import OrderStatusEmail from "@/ui/templatesEmails/orderStatusEmail";
 import type { Prisma } from "@prisma/client";
-import type * as Commerce from "commerce-kit";
 
 export type orderFull = Prisma.OrderGetPayload<{
 	include: {
