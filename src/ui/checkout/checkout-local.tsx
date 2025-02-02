@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createOrder } from "@/lib/actions/order";
+import { pointDeRelais } from "@/lib/utils";
 import {
 	Select,
 	SelectContent,
@@ -156,8 +157,11 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 							<SelectContent>
 								<SelectGroup>
 									<SelectLabel>Choisir un point de relais</SelectLabel>
-									<SelectItem value="1">Point de relais 1</SelectItem>
-									<SelectItem value="2">Point de relais 2</SelectItem>
+									{pointDeRelais.map((relais, i) => (
+										<SelectItem key={i} value={relais.value}>
+											{relais.name}
+										</SelectItem>
+									))}
 								</SelectGroup>
 							</SelectContent>
 						</Select>

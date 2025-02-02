@@ -1,35 +1,53 @@
+import { encodePlusCode, pointDeRelais } from "@/lib/utils";
 import type { ReactElement } from "react";
 
 interface OrderStatusEmailProps {
 	order: { id: string };
 	status: string;
+	pointOfSales?: string;
 }
 
-export default function OrderStatusEmail({ order, status }: OrderStatusEmailProps): ReactElement {
-	const statusMessages: Record<string, { message: string; color: string }> = {
+export default function OrderStatusEmail({
+	order,
+	status,
+	pointOfSales,
+}: OrderStatusEmailProps): ReactElement {
+	const statusMessages: Record<string, { message: string; color: string; icon: string }> = {
 		received: {
-			message: "We've received your order and are preparing it for you.",
-			color: "#3B82F6", // Blue
+			message: "Nous avons bien reçu votre commande et nous la préparons avec soin pour vous.",
+			color: "#3B82F6",
+			icon: "📦",
 		},
 		preparing: {
-			message: "Your order is currently being prepared.",
-			color: "#10B981", // Green
+			message: "Votre commande est en cours de préparation avec toute notre attention.",
+			color: "#10B981",
+			icon: "🔧",
 		},
 		ready_for_pickup: {
-			message: "Your order is ready for pickup!",
-			color: "#F59E0B", // Yellow
+			message: `Votre commande est prête à être retirée chez ${
+				pointDeRelais.find((pos) => pos.value === pointOfSales)?.name || pointOfSales
+			}. Nous avons hâte de vous y accueillir !`,
+			color: "#F59E0B",
+			icon: "✅",
 		},
 		picked_up: {
-			message: "Your order has been successfully picked up.",
-			color: "#6366F1", // Indigo
+			message: "Votre commande a été récupérée avec succès. Merci de votre confiance, et à très bientôt !",
+			color: "#6366F1",
+			icon: "🎉",
 		},
 		canceled: {
-			message: "Your order has been canceled.",
-			color: "#EF4444", // Red
+			message:
+				"Votre commande a été annulée. Nous sommes navrés de ce désagrément et restons à votre écoute pour toute question.",
+			color: "#EF4444",
+			icon: "❌",
 		},
 	};
 
-	const test = statusMessages[status as keyof typeof statusMessages] || statusMessages.received;
+	const test = statusMessages[status as keyof typeof statusMessages] as {
+		message: string;
+		color: string;
+		icon: string;
+	};
 
 	return (
 		<div
@@ -66,28 +84,30 @@ export default function OrderStatusEmail({ order, status }: OrderStatusEmailProp
 							<h1
 								style={{
 									color: "#111827",
-									fontSize: "24px",
+									fontSize: "28px",
 									fontWeight: "bold",
 									margin: "0",
+									lineHeight: "1.2",
 								}}
 							>
-								Order Update
+								Mise à jour de votre commande
 							</h1>
 						</td>
 					</tr>
 					<tr>
 						<td
 							style={{
-								backgroundColor: test?.color,
-								borderRadius: "4px",
+								backgroundColor: test.color,
+								borderRadius: "8px",
 								color: "#FFFFFF",
 								fontSize: "18px",
 								fontWeight: "bold",
-								padding: "16px",
+								padding: "24px",
 								textAlign: "center",
 							}}
 						>
-							{test?.message}
+							<div style={{ fontSize: "36px", marginBottom: "16px" }}>{test.icon}</div>
+							{test.message}
 						</td>
 					</tr>
 					<tr>
@@ -95,24 +115,42 @@ export default function OrderStatusEmail({ order, status }: OrderStatusEmailProp
 							<p
 								style={{
 									color: "#4B5563",
-									fontSize: "16px",
-									lineHeight: "24px",
+									fontSize: "18px",
+									lineHeight: "1.5",
 									margin: "0 0 16px",
 								}}
 							>
-								Order ID: <strong>#{order.id.slice(-8)}</strong>
+								N° de commande: <strong style={{ color: "#111827" }}>#{order.id.slice(-8)}</strong>
 							</p>
 							{status === "ready_for_pickup" && (
-								<p
-									style={{
-										color: "#4B5563",
-										fontSize: "16px",
-										lineHeight: "24px",
-										margin: "0",
-									}}
-								>
-									Pickup Instructions: Bring your ID to the checkout counter during business hours.
-								</p>
+								<>
+									<p
+										style={{
+											color: "#4B5563",
+											fontSize: "16px",
+											lineHeight: "1.5",
+											margin: "0 0 16px",
+										}}
+									>
+										Instructions de retrait : Apportez votre téléphone pour le scan de vérification.
+									</p>
+									<a
+										href={`https://www.google.com/maps/dir/?api=1&destination=${encodePlusCode((pointDeRelais.find((pos) => pos.value === pointOfSales)?.adresse as string) || "")}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										style={{
+											backgroundColor: "#3B82F6",
+											color: "#FFFFFF",
+											padding: "12px 24px",
+											borderRadius: "4px",
+											textDecoration: "none",
+											fontWeight: "bold",
+											display: "inline-block",
+										}}
+									>
+										Obtenir l'itinéraire
+									</a>
+								</>
 							)}
 						</td>
 					</tr>
@@ -126,9 +164,9 @@ export default function OrderStatusEmail({ order, status }: OrderStatusEmailProp
 								textAlign: "center",
 							}}
 						>
-							<p style={{ margin: "0 0 8px" }}>Fort&Fier - Votre magasin de souvenirs de Fort-Liberté</p>
+							<p style={{ margin: "0 0 8px" }}>Fort&Fier - Votre magasin de souvenirs</p>
 							<p style={{ margin: "0", color: "#9CA3AF", fontSize: "12px" }}>
-								© 2023 Fort&Fier. All rights reserved.
+								© 2023 Fort&Fier. Tous droits réservés.
 							</p>
 						</td>
 					</tr>

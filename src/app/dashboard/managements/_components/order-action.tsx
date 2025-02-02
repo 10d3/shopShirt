@@ -18,14 +18,17 @@ export function OrderActions({
 	order: {
 		id: string;
 		status: string;
+		pointOfSales: string | null;
 		// Add other required properties here
 	};
 }) {
+	console.log("order.pointOfSales", order.pointOfSales);
 	const [isPending, startTransition] = useTransition();
 
-	const handleStatusUpdate = (newStatus: string) => {
+	const handleStatusUpdate = (newStatus: string, pointOfSales?: string) => {
+		console.log(newStatus, pointOfSales);
 		startTransition(async () => {
-			await updateOrderStatus(order.id, newStatus);
+			await updateOrderStatus(order.id, newStatus, pointOfSales);
 			window.location.reload();
 		});
 	};
@@ -47,7 +50,9 @@ export function OrderActions({
 					</DropdownMenuItem>
 				)}
 				{order.status === "preparing" && (
-					<DropdownMenuItem onSelect={() => handleStatusUpdate("ready_for_pickup")}>
+					<DropdownMenuItem
+						onSelect={() => handleStatusUpdate("ready_for_pickup", order.pointOfSales as string)}
+					>
 						Mark as Ready for Pickup
 					</DropdownMenuItem>
 				)}

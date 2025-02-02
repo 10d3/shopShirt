@@ -2,6 +2,7 @@
 import { resend } from "@/lib/actions/stripe";
 import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/prisma";
+// import { pointDeRelais } from "@/lib/utils";
 import OrderStatusEmail from "@/ui/templatesEmails/orderStatusEmail";
 import type { Prisma } from "@prisma/client";
 
@@ -70,7 +71,8 @@ export const createOrder = async (data: order) => {
 };
 
 // app/actions/orders.ts
-export async function updateOrderStatus(orderId: string, status: string) {
+export async function updateOrderStatus(orderId: string, status: string, pointOfSales?: string) {
+	console.log(orderId, status, pointOfSales);
 	const order = await prisma.order.update({
 		where: { id: orderId },
 		data: { status },
@@ -79,10 +81,10 @@ export async function updateOrderStatus(orderId: string, status: string) {
 
 	if (order.user?.email) {
 		const subjectMap = {
-			ready_for_pickup: `Your Order #${order.id.slice(-8)} is Ready for Pickup!`,
-			picked_up: `Order #${order.id.slice(-8)} Picked Up`,
-			canceled: `Order #${order.id.slice(-8)} Canceled`,
-			default: `Order Status Update for #${order.id.slice(-8)}`,
+			ready_for_pickup: `Commande n°${order.id.slice(-8)} prête pour retrait`,
+			picked_up: `Commande n°${order.id.slice(-8)} récupérée`,
+			canceled: `Commande n°${order.id.slice(-8)} annulée`,
+			default: `Mise à jour commande n°${order.id.slice(-8)}`,
 		};
 
 		await resend.emails.send({
@@ -90,7 +92,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
 			from: "POS System <pos@fortetfier.com>",
 			to: order.user.email,
 			subject: subjectMap[status as keyof typeof subjectMap] || subjectMap.default,
-			react: OrderStatusEmail({ order, status }),
+			react: OrderStatusEmail({ order, status, pointOfSales }),
 			// text: OrderStatusEmail({ order, status }),
 		});
 	}

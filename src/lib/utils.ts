@@ -210,3 +210,30 @@ const stripeCurrencies: Record<string, number> = {
 	OMR: 3,
 	TND: 3,
 };
+
+export const pointDeRelais = [
+	{
+		name: "T-Sherles Bar Restaurant",
+		adresse: "M576+9G Fort Liberté",
+		value: "tsherlesbar",
+	},
+	{
+		name: "Pratique Multi Services (PMS)",
+		adresse: "M586+HX Fort Liberté",
+		value: "pms",
+	},
+	{
+		name: "YonCell",
+		adresse: "M567+8X8 Fort Liberté",
+		value: "yoncell",
+	},
+	{
+		name: "OMNI-Phamra",
+		adresse: "M578+W6 Fort Liberté",
+		value: "omni",
+	},
+];
+
+export function encodePlusCode(plusCode: string): string {
+	return encodeURIComponent(plusCode).replace(/\+/g, "%2B");
+}

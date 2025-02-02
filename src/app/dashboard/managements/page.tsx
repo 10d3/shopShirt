@@ -1,5 +1,6 @@
 import Pagination from "@/app/dashboard/_components/pagination";
 import { OrderActions } from "@/app/dashboard/managements/_components/order-action";
+import { OrderItemsDialog } from "@/app/dashboard/managements/_components/order-items-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,22 +9,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/prisma";
+import { pointDeRelais } from "@/lib/utils";
 import type { Prisma } from "@prisma/client";
-import { formatMoney } from "commerce-kit/currencies";
-import { ArrowUpDown, Search } from "lucide-react";
+// import { formatMoney } from "commerce-kit/currencies";
+import { ArrowUpDown, Download, Search } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function OrderManagementPage(props: {
-	searchParams: Promise<{
+	searchParams: {
 		page?: string;
 		search?: string;
 		status?: string;
 		sort?: "asc" | "desc";
-	}>;
+	};
 }) {
 	const session = await auth();
 	const user = session?.user;
+	const searchParams = await props.searchParams;
 	if (!user) {
 		return redirect("/login");
 	}
@@ -35,7 +38,7 @@ export default async function OrderManagementPage(props: {
 	if (admin?.role !== "Admin") {
 		return redirect("/");
 	}
-	const searchParams = await props.searchParams;
+
 	const currentPage = Number(searchParams.page) || 1;
 	const pageSize = 10;
 	const skip = (currentPage - 1) * pageSize;
@@ -55,7 +58,6 @@ export default async function OrderManagementPage(props: {
 		],
 	};
 
-	// In your server component (page.tsx)
 	const [orders, totalOrders] = await Promise.all([
 		prisma.order
 			.findMany({
@@ -82,96 +84,101 @@ export default async function OrderManagementPage(props: {
 		prisma.order.count({ where }),
 	]);
 
-	const getTotalItems = (items: (typeof orders)[number]["items"]) =>
-		items.reduce((sum, item) => sum + item.quantity, 0);
-
 	return (
 		<div className="p-8 bg-gray-50 min-h-screen">
-			<Card>
-				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
-					<CardTitle className="text-2xl font-bold">Order Management</CardTitle>
-					<div className="flex items-center space-x-4">
-						<div className="relative">
+			<Card className="shadow-lg">
+				<CardHeader className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-7">
+					<CardTitle className="text-3xl font-bold">Order Management</CardTitle>
+					<div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+						<div className="relative w-full sm:w-auto">
 							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 							<Input
 								placeholder="Search orders..."
-								className="pl-9 w-[300px]"
+								className="pl-9 w-full sm:w-[300px]"
 								defaultValue={searchParams.search}
 							/>
 						</div>
 						<Select defaultValue={searchParams.status || "all"}>
-							<SelectTrigger className="w-[180px]">
+							<SelectTrigger className="w-full sm:w-[180px]">
 								<SelectValue placeholder="Filter by status" />
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="all">All Statuses</SelectItem>
-								<SelectItem value="pending">Pending</SelectItem>
-								<SelectItem value="processing">Processing</SelectItem>
-								<SelectItem value="completed">Completed</SelectItem>
+								<SelectItem value="received">Received</SelectItem>
+								<SelectItem value="preparing">Preparing</SelectItem>
+								<SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
+								<SelectItem value="picked_up">Picked Up</SelectItem>
 								<SelectItem value="canceled">Canceled</SelectItem>
 							</SelectContent>
 						</Select>
-						<Button variant="outline" className="w-[180px]">
+						<Button variant="outline" className="w-full sm:w-[180px]">
 							<ArrowUpDown className="mr-2 h-4 w-4" />
 							{searchParams.sort === "asc" ? "Oldest First" : "Newest First"}
 						</Button>
 					</div>
 				</CardHeader>
 				<CardContent>
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead>Order ID</TableHead>
-								<TableHead>Date</TableHead>
-								<TableHead>Customer</TableHead>
-								<TableHead>Items</TableHead>
-								<TableHead>Total</TableHead>
-								<TableHead>Status</TableHead>
-								<TableHead>Payment</TableHead>
-								<TableHead>Actions</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{orders.map((order) => (
-								<TableRow key={order.id}>
-									<TableCell className="font-medium">
-										<Link href={`/admin/orders/${order.id}`} className="hover:underline text-blue-600">
-											#{order.id.slice(-8)}
-										</Link>
-									</TableCell>
-									<TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
-									<TableCell>
-										<div className="flex flex-col">
-											<span className="font-medium">{order.user?.name}</span>
-											<span className="text-sm text-muted-foreground">{order.user?.email}</span>
-										</div>
-									</TableCell>
-									<TableCell>{getTotalItems(order.items)}</TableCell>
-									<TableCell className="font-medium">
-										{formatMoney({
-											amount: order.totalAmount,
-											currency: "USD",
-										})}
-									</TableCell>
-									<TableCell>
-										<StatusBadge status={order.status} />
-									</TableCell>
-									<TableCell>
-										<Badge variant="outline" className="capitalize">
-											{order.verification?.paymentMethod}
-										</Badge>
-									</TableCell>
-									<TableCell>
-										<OrderActions order={order} />
-									</TableCell>
+					<div className="overflow-x-auto">
+						<Table>
+							<TableHeader>
+								<TableRow>
+									<TableHead>Order ID</TableHead>
+									<TableHead>Date</TableHead>
+									<TableHead>Customer</TableHead>
+									<TableHead>Items</TableHead>
+									<TableHead>POS</TableHead>
+									<TableHead>Status</TableHead>
+									<TableHead>Payment</TableHead>
+									<TableHead>Actions</TableHead>
 								</TableRow>
-							))}
-						</TableBody>
-					</Table>
+							</TableHeader>
+							<TableBody>
+								{orders.map((order) => (
+									<TableRow key={order.id} className="hover:bg-gray-50">
+										<TableCell className="font-medium">
+											<Link href={`/admin/orders/${order.id}`} className="hover:underline text-blue-600">
+												#{order.id.slice(-8)}
+											</Link>
+										</TableCell>
+										<TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+										<TableCell>
+											<div className="flex flex-col">
+												<span className="font-medium">{order.user?.name}</span>
+												<span className="text-sm text-muted-foreground">{order.user?.email}</span>
+											</div>
+										</TableCell>
+										<TableCell>
+											<OrderItemsDialog items={order.items} />
+										</TableCell>
+										<TableCell className="font-medium">
+											{(order.pointOfSales &&
+												pointDeRelais.find((pos) => pos.value === order.pointOfSales)?.name) ||
+												order.pointOfSales}
+										</TableCell>
+										<TableCell>
+											<StatusBadge status={order.status} />
+										</TableCell>
+										<TableCell>
+											<Badge variant="outline" className="capitalize">
+												{order.verification?.paymentMethod}
+											</Badge>
+										</TableCell>
+										<TableCell>
+											<OrderActions order={order} />
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</div>
 				</CardContent>
 			</Card>
 
-			<div className="mt-6 flex justify-center">
+			<div className="mt-6 flex justify-between items-center">
+				<Button variant="outline" className="flex items-center gap-2">
+					<Download className="h-4 w-4" />
+					Export Orders
+				</Button>
 				<Pagination currentPage={currentPage} totalItems={totalOrders} itemsPerPage={pageSize} />
 			</div>
 		</div>
@@ -179,25 +186,15 @@ export default async function OrderManagementPage(props: {
 }
 
 function StatusBadge({ status }: { status: string }) {
-	const statusColors = {
-		received: "bg-blue-100 text-blue-800",
-		preparing: "bg-orange-100 text-orange-800",
-		ready_for_pickup: "bg-green-100 text-green-800",
-		picked_up: "bg-purple-100 text-purple-800",
-		canceled: "bg-red-100 text-red-800",
+	const statusConfig = {
+		received: { color: "bg-blue-100 text-blue-800", label: "Received" },
+		preparing: { color: "bg-orange-100 text-orange-800", label: "Preparing" },
+		ready_for_pickup: { color: "bg-green-100 text-green-800", label: "Ready for Pickup" },
+		picked_up: { color: "bg-purple-100 text-purple-800", label: "Picked Up" },
+		canceled: { color: "bg-red-100 text-red-800", label: "Canceled" },
 	};
 
-	const statusLabels = {
-		received: "Received",
-		preparing: "Preparing",
-		ready_for_pickup: "Ready for Pickup",
-		picked_up: "Picked Up",
-		canceled: "Canceled",
-	};
+	const { color, label } = statusConfig[status as keyof typeof statusConfig] || statusConfig.received;
 
-	return (
-		<Badge className={`capitalize ${statusColors[status as keyof typeof statusColors]}`}>
-			{statusLabels[status as keyof typeof statusLabels]}
-		</Badge>
-	);
+	return <Badge className={`capitalize ${color}`}>{label}</Badge>;
 }
