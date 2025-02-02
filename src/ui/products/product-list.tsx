@@ -26,7 +26,7 @@ export const ProductList = async ({ products }: { products: Commerce.MappedProdu
 												loading={idx < 3 ? "eager" : "lazy"}
 												priority={idx < 3}
 												sizes="(max-width: 1024x) 100vw, (max-width: 1280px) 50vw, 700px"
-												alt=""
+												alt={product.name}
 											/>
 										</div>
 									)}
