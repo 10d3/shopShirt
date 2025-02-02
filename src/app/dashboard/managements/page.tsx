@@ -17,12 +17,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function OrderManagementPage(props: {
-	searchParams: {
+	searchParams: Promise<{
 		page?: string;
 		search?: string;
 		status?: string;
 		sort?: "asc" | "desc";
-	};
+	}>;
 }) {
 	const session = await auth();
 	const user = session?.user;
