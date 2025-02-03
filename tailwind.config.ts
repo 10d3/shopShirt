@@ -3,7 +3,8 @@ import type { Config } from "tailwindcss";
 const config: Config = {
 	darkMode: ["class", ".dark-mode"],
 	content: [
-		"./src/**/*.{js,ts,jsx,tsx}", // Adjust this path based on your project structure
+		"./src/**/*.{js,ts,jsx,tsx, mdx}", // Adjust this path based on your project structure
+		"./content/**/*.{md,mdx}",
 	],
 	theme: {
 		extend: {
