@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
 			{ hostname: "d1wqzb5bdbcre6.cloudfront.net" },
 			{ hostname: "*.blob.vercel-storage.com" },
 			{ hostname: "assets.aceternity.com" },
+			{ hostname: "utfs.io" },
 		],
 		formats: ["image/avif", "image/webp"],
 	},

@@ -1,4 +1,5 @@
 import { getProduct, getProducts } from "@/lib/actions/product";
+import type { StripeProduct } from "@/lib/types";
 import { cn } from "@/lib/utils";
 // app/dashboard/page.tsx
 import { Box, FileText, LayoutDashboard, Settings } from "lucide-react";
@@ -60,11 +61,7 @@ export default async function DashboardPage({
 					)}
 
 					{/* {currentStep === "products" && !editId && <ProductList products={products} />} */}
-					{currentStep === "products" && !editId && (
-						<ProductList
-							products={products as { id: string; name: string; prices: { unit_amount: number }[] }[]}
-						/>
-					)}
+					{currentStep === "products" && !editId && <ProductList products={products as StripeProduct[]} />}
 
 					{/* {currentStep === "management" && <OrderManagementPage/>} */}
 

@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 			description: validatedBody.description,
 			active: validatedBody.active,
 			metadata: {
-				category: validatedBody.category,
+				// category: validatedBody.category,
 				...validatedBody.metadata,
 			},
 		});

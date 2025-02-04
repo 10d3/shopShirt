@@ -15,6 +15,16 @@ export const generateMetadata = async (): Promise<Metadata> => {
 export default async function AllProductsPage() {
 	// const products = await Commerce.productBrowse({ first: 100 });
 	const products = await productBrowse({ first: 100 });
+	const uniqueProducts = Array.from(
+		products
+			.reduce((map, product) => {
+				if (!map.has(product.metadata.slug)) {
+					map.set(product.metadata.slug, product);
+				}
+				return map;
+			}, new Map<string, (typeof products)[0]>())
+			.values(),
+	);
 	const t = await getTranslations("/products.page");
 
 	console.log("products", products);
@@ -22,7 +32,7 @@ export default async function AllProductsPage() {
 	return (
 		<main className="pb-8">
 			<h1 className="text-3xl font-bold leading-none tracking-tight text-foreground">{t("title")}</h1>
-			<ProductList products={products} />
+			<ProductList products={uniqueProducts} />
 		</main>
 	);
 }

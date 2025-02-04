@@ -37,11 +37,22 @@ export default async function CategoryPage(props: {
 		filter: { category: params.slug },
 	});
 
-	console.log("products", products);
+	// console.log("products", products);
 
 	if (products.length === 0) {
 		return notFound();
 	}
+
+	const uniqueProducts = Array.from(
+		products
+			.reduce((map, product) => {
+				if (!map.has(product.metadata.slug)) {
+					map.set(product.metadata.slug, product);
+				}
+				return map;
+			}, new Map<string, (typeof products)[0]>())
+			.values(),
+	);
 
 	const t = await getTranslations("/category.page");
 
@@ -53,7 +64,7 @@ export default async function CategoryPage(props: {
 					{t("title", { categoryName: deslugify(params.slug) })}
 				</div>
 			</h1>
-			<ProductList products={products} />
+			<ProductList products={uniqueProducts} />
 		</main>
 	);
 }
