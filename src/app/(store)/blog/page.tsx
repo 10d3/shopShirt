@@ -76,6 +76,8 @@ export default async function BlogPage(props: { searchParams: Promise<{ page?: s
 	const page = Number(searchParams.page) || 1;
 	const posts = await getBlogPosts();
 
+	console.log("posts", posts);
+
 	const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 	const displayedPosts = posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE);
 

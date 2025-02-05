@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
 			{ hostname: "assets.aceternity.com" },
 			{ hostname: "utfs.io" },
 			{ hostname: "lescientifique.org" },
+			{ hostname: "images.pexels.com" },
 		],
 		formats: ["image/avif", "image/webp"],
 	},

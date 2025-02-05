@@ -63,6 +63,8 @@ export default async function Blog(props: {
 		notFound();
 	}
 
+	console.log(post);
+
 	return (
 		<section
 			id="blog"
