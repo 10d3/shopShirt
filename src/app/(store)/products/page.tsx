@@ -27,7 +27,7 @@ export default async function AllProductsPage() {
 	);
 	const t = await getTranslations("/products.page");
 
-	console.log("products", products);
+	// console.log("products", products);
 
 	return (
 		<main className="pb-8">

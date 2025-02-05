@@ -131,7 +131,7 @@ export default function ProductEditor({
 
 	async function onSubmit(values: ProductFormValues) {
 		try {
-			console.log(values);
+			// console.log(values);
 			// const res = await fetch("/api/products" + (initialData?.id ? `/${initialData.id}` : ""), {
 			// 	method: initialData?.id ? "PUT" : "POST",
 			// 	headers: {

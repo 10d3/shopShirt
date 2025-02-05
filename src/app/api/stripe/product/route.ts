@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 		const body = await req.json();
 		const validatedBody = productSchema.parse(body);
 
-		console.log(validatedBody);
+		// console.log(validatedBody);
 
 		// Create Stripe product with metadata
 		const product = await stripe.products.create({
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 		});
 	} catch (error: unknown) {
 		if (error instanceof z.ZodError) {
-			console.log(error);
+			// console.log(error);
 			return NextResponse.json({ error: error.errors }, { status: 400 });
 		}
 

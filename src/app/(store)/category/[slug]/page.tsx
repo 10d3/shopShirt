@@ -31,7 +31,7 @@ export default async function CategoryPage(props: {
 	params: Promise<{ slug: string }>;
 }) {
 	const params = await props.params;
-	console.log(params.slug);
+	// console.log(params.slug);
 	const products = await productBrowse({
 		first: 100,
 		filter: { category: params.slug },

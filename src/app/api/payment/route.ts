@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 		});
 		return new Response("Payment adding success", { status: 200 });
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return new Response("Error creating payment", { status: 500 });
 	}
 

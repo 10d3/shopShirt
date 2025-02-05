@@ -22,11 +22,11 @@ export function OrderActions({
 		// Add other required properties here
 	};
 }) {
-	console.log("order.pointOfSales", order.pointOfSales);
+	// console.log("order.pointOfSales", order.pointOfSales);
 	const [isPending, startTransition] = useTransition();
 
 	const handleStatusUpdate = (newStatus: string, pointOfSales?: string) => {
-		console.log(newStatus, pointOfSales);
+		// console.log(newStatus, pointOfSales);
 		startTransition(async () => {
 			await updateOrderStatus(order.id, newStatus, pointOfSales);
 			window.location.reload();

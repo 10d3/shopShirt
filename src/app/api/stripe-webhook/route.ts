@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 	);
 
 	if (error) {
-		console.error(error);
+		// console.error(error);
 		return new Response("Invalid signature", { status: 401 });
 	}
 
