@@ -9,6 +9,7 @@ import "../../../mdx.css";
 // import Link from "next/link";
 // import { useTheme } from "next-themes";
 import { getPost } from "@/lib/actions/post";
+import Image from "next/image";
 
 export async function generateMetadata(props: {
 	params: Promise<{
@@ -18,13 +19,8 @@ export async function generateMetadata(props: {
 	const params = await props.params;
 	let post = await getPost(params.slug);
 
-	let {
-		title,
-		publishedAt: publishedTime,
-		summary: description,
-		// image,
-	} = post.metadata;
-	//   let ogImage = image ? `${DATA.url}/${image}` : `${DATA.url}/og?title=${title}`;
+	let { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
+	let ogImage = image ? `${image}` : `https://fortetfier.com/og?title=${title}`;
 
 	return {
 		title,
@@ -39,7 +35,7 @@ export async function generateMetadata(props: {
 			description,
 			type: "article",
 			publishedTime,
-			//   url: `${DATA.url}/blog/${post.slug}`,
+			url: `https://fortetfier.com/blog/${post.slug}`,
 			images: [
 				{
 					url: post.metadata.image ? `${post.metadata.image}` : `${post.metadata.image}`,
@@ -50,7 +46,7 @@ export async function generateMetadata(props: {
 			card: "summary_large_image",
 			title,
 			description,
-			//   images: [ogImage],
+			images: [ogImage],
 		},
 	};
 }
@@ -83,13 +79,13 @@ export default async function Blog(props: {
 						datePublished: post.metadata.publishedAt,
 						dateModified: post.metadata.publishedAt,
 						description: post.metadata.summary,
-						// image: post.metadata.image
-						//   ? `${DATA.url}${post.metadata.image}`
-						//   : `${DATA.url}/og?title=${post.metadata.title}`,
-						// url: `${DATA.url}/blog/${post.slug}`,
+						image: post.metadata.image
+							? `${post.metadata.image}`
+							: `https://fortetfier.com/og?title=${post.metadata.title}`,
+						url: `https://fortetfier.com/blog/${post.slug}`,
 						author: {
 							"@type": "Person",
-							//   name: DATA.name,
+							name: post.metadata.authors[0],
 						},
 					}),
 				}}
@@ -101,6 +97,15 @@ export default async function Blog(props: {
 						{formatDate(post.metadata.publishedAt)}
 					</p>
 				</Suspense>
+			</div>
+			<div>
+				<Image
+					src={post.metadata.image || "/placeholder.svg"}
+					className="w-full"
+					alt="Article image"
+					width={1000}
+					height={1000}
+				/>
 			</div>
 			<article
 				className="mdx-component mdx-content text-justify prose dark:prose-invert"
