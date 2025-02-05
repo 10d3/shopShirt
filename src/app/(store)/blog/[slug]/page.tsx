@@ -9,6 +9,8 @@ import "../../../mdx.css";
 // import Link from "next/link";
 // import { useTheme } from "next-themes";
 import { getPost } from "@/lib/actions/post";
+import { Button } from "@/ui/shadcn/button";
+import { Facebook, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 
 export async function generateMetadata(props: {
@@ -92,7 +94,7 @@ export default async function Blog(props: {
 					}),
 				}}
 			/>
-			<h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">{post.metadata.title}</h1>
+			<h1 className="title font-medium text-4xl tracking-tighter max-w-full">{post.metadata.title}</h1>
 			<div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
 				<Suspense fallback={<p className="h-5" />}>
 					<p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -113,6 +115,35 @@ export default async function Blog(props: {
 				className="mdx-component mdx-content text-justify prose dark:prose-invert"
 				dangerouslySetInnerHTML={{ __html: post.source }}
 			></article>
+			<div className="mt-4 flex justify-center space-x-4">
+				<Button variant="outline" size="icon" asChild>
+					<a
+						href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://fortetfier.com/blog/${post.slug}`)}`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Facebook className="h-4 w-4" />
+					</a>
+				</Button>
+				<Button variant="outline" size="icon" asChild>
+					<a
+						href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://fortetfier.com/blog/${post.slug}`)}&text=${encodeURIComponent(post.metadata.title)}`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Twitter className="h-4 w-4" />
+					</a>
+				</Button>
+				<Button variant="outline" size="icon" asChild>
+					<a
+						href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://fortetfier.com/blog/${post.slug}`)}&title=${encodeURIComponent(post.metadata.title)}`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Linkedin className="h-4 w-4" />
+					</a>
+				</Button>
+			</div>
 		</section>
 	);
 }

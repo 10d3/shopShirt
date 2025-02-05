@@ -23,7 +23,7 @@ export function BlogPostCard({ post, featured = false }: { post: BlogPost; featu
 		<Card
 			className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 ${featured ? "lg:flex" : ""}`}
 		>
-			<div className={`relative ${featured ? "lg:w-1/2" : "h-48"}`}>
+			<div className={`relative ${featured ? "lg:w-1/2 w-full h-48 lg:h-auto" : "h-48"}`}>
 				<Image
 					src={post.metadata.image || "/placeholder.svg"}
 					alt={post.metadata.title || "Article image"}

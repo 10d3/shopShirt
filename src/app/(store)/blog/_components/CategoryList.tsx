@@ -20,9 +20,12 @@ export function CategoryList({ categories }: { categories: string[] }) {
 					variant="outline"
 					onClick={() => router.push(`/blog?category=${encodeURIComponent(category)}`)}
 				>
-					{category}
+					{category.charAt(0).toUpperCase() + category.slice(1)}
 				</Button>
 			))}
+			<Button variant="outline" onClick={() => router.push("/blog")}>
+				Tout
+			</Button>
 		</div>
 	);
 }
