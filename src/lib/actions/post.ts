@@ -12,6 +12,9 @@ export type Metadata = {
 	publishedAt: string;
 	summary: string;
 	image?: string;
+	authors: string[];
+	keywords: string[];
+	readingTime?: string;
 };
 
 function getMDXFiles(dir: string) {

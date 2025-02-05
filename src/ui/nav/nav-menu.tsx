@@ -11,10 +11,10 @@ const links = [
 		label: slug.charAt(0).toUpperCase() + slug.slice(1).toLowerCase(),
 		href: `/category/${slug}`,
 	})),
-	// {
-	// 	label: "Digital",
-	// 	href: "/category/digital",
-	// },
+	{
+		label: "Chroniques",
+		href: "/blog",
+	},
 ];
 
 export const NavMenu = () => {

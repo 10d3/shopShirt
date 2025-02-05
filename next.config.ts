@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
 			{ hostname: "*.blob.vercel-storage.com" },
 			{ hostname: "assets.aceternity.com" },
 			{ hostname: "utfs.io" },
+			{ hostname: "lescientifique.org" },
 		],
 		formats: ["image/avif", "image/webp"],
 	},
