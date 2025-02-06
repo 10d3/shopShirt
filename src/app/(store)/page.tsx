@@ -1,6 +1,7 @@
 import { publicUrl } from "@/env.mjs";
 import { getTranslations } from "@/i18n/server";
 import StoreConfig from "@/store.config";
+import BlogTestimonial from "@/ui/blog-animated";
 import { CategoryBox } from "@/ui/category-box";
 import { ProductList } from "@/ui/products/product-list";
 import { YnsLink } from "@/ui/yns-link";
@@ -54,6 +55,9 @@ export default async function Home() {
 						<CategoryBox key={slug} name={name} categorySlug={slug} src={src} />
 					))}
 				</div>
+			</section>
+			<section className="w-full py-8">
+				<BlogTestimonial />
 			</section>
 		</main>
 	);

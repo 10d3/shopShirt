@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Testimonial = {
@@ -82,14 +83,16 @@ export const AnimatedTestimonials = ({
 									}}
 									className="absolute inset-0 origin-bottom"
 								>
-									<Image
-										src={testimonial.src}
-										alt={testimonial.name}
-										width={500}
-										height={500}
-										draggable={false}
-										className="h-full w-full rounded-3xl object-cover object-center"
-									/>
+									<Link href={testimonials[active].link}>
+										<Image
+											src={testimonial.src}
+											alt={testimonial.name}
+											width={500}
+											height={500}
+											draggable={false}
+											className="h-full w-full rounded-3xl object-cover object-center"
+										/>
+									</Link>
 								</motion.div>
 							))}
 						</AnimatePresence>
@@ -115,9 +118,11 @@ export const AnimatedTestimonials = ({
 							ease: "easeInOut",
 						}}
 					>
-						<h3 className="text-2xl font-bold text-foreground">{testimonials[active].name}</h3>
+						<Link href={testimonials[active].link}>
+							<h3 className="text-2xl font-bold text-foreground">{testimonials[active].name}</h3>
+						</Link>
 						<p className="text-sm text-muted-foreground">{testimonials[active].designation}</p>
-						<motion.p className="text-lg text-muted-foreground mt-8">
+						<motion.p className="text-lg text-muted-foreground mt-8 line-clamp-3">
 							{testimonials[active].quote.split(" ").map((word, index) => (
 								<motion.span
 									key={index}
