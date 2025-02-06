@@ -1,4 +1,5 @@
 import { getBlogPosts } from "@/lib/actions/post";
+import { Gallery6 } from "@/ui/gallery6";
 import { AnimatedTestimonials } from "@/ui/shadcn/animated-testimonials";
 import React from "react";
 
@@ -8,17 +9,23 @@ import React from "react";
 
 export default async function BlogTestimonial() {
 	const allBlogPosts = await getBlogPosts();
-	const arrangedPosts = allBlogPosts.map((post) => ({
-		quote: post.metadata.summary,
-		name: post.metadata.title,
-		src: post.metadata.image,
-		designation: post.metadata.author,
-		link: `/blog/${post.slug}`,
+	const arrangedPosts = allBlogPosts.map((post, index) => ({
+		id: index.toString(),
+		summary: post.metadata.summary,
+		title: post.metadata.title,
+		image: post.metadata.image,
+		// designation: post.metadata.author,
+		url: `/blog/${post.slug}`,
 	}));
+
+	const demoData = {
+		heading: "Derniers articles",
+		// demoUrl: "https://www.shadcnblocks.com",
+		items: arrangedPosts,
+	};
 	return (
 		<div>
-			<h2 className="text-2xl font-bold mb-4">Derniers articles</h2>
-			<AnimatedTestimonials autoplay testimonials={arrangedPosts} />
+			<Gallery6 {...demoData} />
 		</div>
 	);
 }
