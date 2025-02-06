@@ -12,6 +12,7 @@ type Testimonial = {
 	name: string;
 	designation: string;
 	src: string;
+	link: string;
 };
 
 export const AnimatedTestimonials = ({
@@ -83,7 +84,7 @@ export const AnimatedTestimonials = ({
 									}}
 									className="absolute inset-0 origin-bottom"
 								>
-									<Link href={testimonials[active].link}>
+									<Link href={testimonials[active as number]?.link as string}>
 										<Image
 											src={testimonial.src}
 											alt={testimonial.name}
@@ -118,12 +119,12 @@ export const AnimatedTestimonials = ({
 							ease: "easeInOut",
 						}}
 					>
-						<Link href={testimonials[active].link}>
-							<h3 className="text-2xl font-bold text-foreground">{testimonials[active].name}</h3>
+						<Link href={testimonials[active as number]?.link as string}>
+							<h3 className="text-2xl font-bold text-foreground">{testimonials[active as number]?.name}</h3>
 						</Link>
-						<p className="text-sm text-muted-foreground">{testimonials[active].designation}</p>
+						<p className="text-sm text-muted-foreground">{testimonials[active as number]?.designation}</p>
 						<motion.p className="text-lg text-muted-foreground mt-8 line-clamp-3">
-							{testimonials[active].quote.split(" ").map((word, index) => (
+							{testimonials[active as number]?.quote.split(" ").map((word, index) => (
 								<motion.span
 									key={index}
 									initial={{
