@@ -106,7 +106,7 @@ export default async function Blog(props: {
 				<Image
 					src={post.metadata.image || "/placeholder.svg"}
 					className="w-full"
-					alt={post.metadata.title}
+					alt="Article image"
 					width={1000}
 					height={1000}
 				/>
