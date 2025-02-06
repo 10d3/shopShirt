@@ -1,11 +1,6 @@
 import { getBlogPosts } from "@/lib/actions/post";
 import { Gallery6 } from "@/ui/gallery6";
-import { AnimatedTestimonials } from "@/ui/shadcn/animated-testimonials";
 import React from "react";
-
-/**
- * A React functional component that renders a div containing the text "blog-animated".
- */
 
 export default async function BlogTestimonial() {
 	const allBlogPosts = await getBlogPosts();
