@@ -153,7 +153,7 @@ export const createProduct = async (values: ProductFormValues) => {
 			await Promise.all(
 				values.variants.map(async (variant) => {
 					const variantProduct = await stripe.products.create({
-						name: `${values.name} - ${variant.variant}`,
+						name: `${values.name}`,
 						description: values.description,
 						images: variant.image,
 						default_price_data: {
@@ -179,7 +179,7 @@ export const createProduct = async (values: ProductFormValues) => {
 		}
 
 		// revalidatePath("/dashboard");
-		redirect("/dashboard?step=products");
+		// redirect("/dashboard?step=products");
 		return plainProduct; // Return simplified object
 	} catch (error) {
 		console.error("Error creating product:", error);
