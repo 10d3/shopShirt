@@ -178,8 +178,6 @@ export const createProduct = async (values: ProductFormValues) => {
 			);
 		}
 
-		// revalidatePath("/dashboard");
-		// redirect("/dashboard?step=products");
 		return plainProduct; // Return simplified object
 	} catch (error) {
 		console.error("Error creating product:", error);

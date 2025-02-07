@@ -29,6 +29,8 @@ const EXCHANGE_RATE = 132; // HTG to USD
 export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 	const [paymentStatus, setPaymentStatus] = useState<"idle" | "success" | "error">("idle");
 	const amountHTG = (cart.cart.amount / 100) * EXCHANGE_RATE;
+	console.log(amountHTG);
+	console.log(cart.cart.amount);
 	const amountUTGN = Math.round(amountHTG);
 
 	const router = useRouter();

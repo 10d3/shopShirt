@@ -1,12 +1,18 @@
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
-	const { txd, amount, sender } = (await req.json()) as { txd: string; amount: string; sender: string };
+	const { transactionId, amount, sender } = (await req.json()) as {
+		transactionId: string;
+		amount: string;
+		sender: string;
+	};
 
 	//convert txd. amount, sender to numbers
-	const txdNum = Number(txd);
+	const txdNum = Number(transactionId);
 	const amountNum = Number(amount);
 	const senderNum = Number(sender);
+
+	console.log(txdNum, amountNum, senderNum);
 
 	if (!txdNum || !amountNum || !senderNum) {
 		return new Response("Missing parameters", { status: 400 });
@@ -15,7 +21,7 @@ export async function POST(req: Request) {
 	try {
 		await prisma.verification.create({
 			data: {
-				txd: txd,
+				txd: transactionId,
 				amount: amountNum,
 				sender: sender,
 				paymentMethod: "local",
