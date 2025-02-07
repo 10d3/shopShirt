@@ -2,13 +2,13 @@ import { getTranslations } from "@/i18n/server";
 import StoreConfig from "@/store.config";
 import { Newsletter } from "@/ui/footer/newsletter.client";
 import { YnsLink } from "@/ui/yns-link";
-import type { SVGAttributes } from "react";
+// import type { SVGAttributes } from "react";
 
 const sections = [
 	{
 		header: "Products",
-		links: StoreConfig.categories.map(({ name, slug }) => ({
-			label: name,
+		links: StoreConfig.categories.map(({ slug }) => ({
+			label: slug.charAt(0).toUpperCase() + slug.slice(1),
 			href: `/category/${slug}`,
 		})),
 	},
@@ -20,12 +20,12 @@ const sections = [
 				href: "https://yournextstore.com/#features",
 			},
 			{
-				label: "Pricing",
-				href: "https://yournextstore.com/#pricing",
+				label: "A propos de nous",
+				href: "https://fortetfier.com/about",
 			},
 			{
-				label: "Contact Us",
-				href: "mailto:hi@yournextstore.com",
+				label: "Contactez-nous",
+				href: "mailto:contact@fortetfier.com",
 			},
 		],
 	},
@@ -63,10 +63,10 @@ export async function Footer() {
 			</div>
 			<div className="container mt-8 flex max-w-7xl flex-col items-center justify-between gap-4 text-sm text-neutral-500 md:flex-row">
 				<div>
-					<p>© 2024 Your Next Store</p>
-					<p>Delightful commerce for everyone</p>
+					<p>© 2025 Fort&Fier</p>
+					<p>Un commerce agréable pour tous</p>
 				</div>
-				<div className="flex items-center gap-4">
+				{/* <div className="flex items-center gap-4">
 					<YnsLink
 						className="inline-flex items-center gap-1 transition-colors hover:text-neutral-700"
 						href="https://x.com/zaiste"
@@ -81,19 +81,19 @@ export async function Footer() {
 						<TwitterIcon className="h-4 w-4" /> @typeofweb
 						<span className="sr-only">Twitter</span>
 					</YnsLink>
-				</div>
+				</div> */}
 			</div>
 		</footer>
 	);
 }
 
-function TwitterIcon(props: SVGAttributes<SVGSVGElement>) {
-	return (
-		<svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 596 596" fill="none">
-			<path
-				fill="#fff"
-				d="m1 19 230 307L0 577h52l203-219 164 219h177L353 252 568 19h-52L329 221 179 19H1Zm77 38h82l359 481h-81L78 57Z"
-			/>
-		</svg>
-	);
-}
+// function TwitterIcon(props: SVGAttributes<SVGSVGElement>) {
+// 	return (
+// 		<svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 596 596" fill="none">
+// 			<path
+// 				fill="#fff"
+// 				d="m1 19 230 307L0 577h52l203-219 164 219h177L353 252 568 19h-52L329 221 179 19H1Zm77 38h82l359 481h-81L78 57Z"
+// 			/>
+// 		</svg>
+// 	);
+// }

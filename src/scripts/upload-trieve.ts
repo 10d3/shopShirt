@@ -54,6 +54,7 @@ Description: ${product.description}
 			amount: product.default_price.unit_amount,
 			currency: product.default_price.currency,
 			category: product.metadata.category,
+			// originalPrice: product.metadata.originalPrice,
 		} satisfies TrieveProductMetadata,
 	};
 });
@@ -70,4 +71,5 @@ export type TrieveProductMetadata = {
 	amount: number;
 	currency: string;
 	category: string | undefined;
+	originalPrice?: string;
 };

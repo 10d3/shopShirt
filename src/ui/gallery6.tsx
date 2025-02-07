@@ -34,32 +34,28 @@ const Gallery6 = ({
 		{
 			id: "item-2",
 			title: "Computer Vision Technology",
-			summary:
-				"Powerful image recognition and processing capabilities that allow AI systems to analyze, understand, and interpret visual information from the world.",
+			summary: "Powerful image recognition and processing capabilities for AI systems.",
 			url: "#",
 			image: "/images/block/placeholder-dark-1.svg",
 		},
 		{
 			id: "item-3",
 			title: "Machine Learning Automation",
-			summary:
-				"Self-improving algorithms that learn from data patterns to automate complex tasks and make intelligent decisions with minimal human intervention.",
+			summary: "Self-improving algorithms that learn from data patterns to automate complex tasks.",
 			url: "#",
 			image: "/images/block/placeholder-dark-1.svg",
 		},
 		{
 			id: "item-4",
 			title: "Predictive Analytics",
-			summary:
-				"Advanced forecasting capabilities that analyze historical data to predict future trends and outcomes, helping businesses make data-driven decisions.",
+			summary: "Advanced forecasting capabilities to predict future trends and outcomes.",
 			url: "#",
 			image: "/images/block/placeholder-dark-1.svg",
 		},
 		{
 			id: "item-5",
 			title: "Neural Network Architecture",
-			summary:
-				"Sophisticated AI models inspired by human brain structure, capable of solving complex problems through deep learning and pattern recognition.",
+			summary: "Sophisticated AI models inspired by human brain structure for complex problem-solving.",
 			url: "#",
 			image: "/images/block/placeholder-dark-1.svg",
 		},
@@ -68,6 +64,7 @@ const Gallery6 = ({
 	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 	const [canScrollPrev, setCanScrollPrev] = useState(false);
 	const [canScrollNext, setCanScrollNext] = useState(false);
+
 	useEffect(() => {
 		if (!carouselApi) {
 			return;
@@ -82,68 +79,56 @@ const Gallery6 = ({
 			carouselApi.off("select", updateSelection);
 		};
 	}, [carouselApi]);
+
 	return (
 		<section className="py-6">
-			<div className="">
-				<div className="mb-8 flex flex-col justify-between md:mb-14 md:flex-row md:items-end lg:mb-16">
-					<div>
-						<h2 className="mb-3 text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6">{heading}</h2>
-						{/* <a
-							href={demoUrl}
-							className="group flex items-center gap-1 text-sm font-medium md:text-base lg:text-lg"
-						>
-							Book a demo
-							<ArrowUpRight className="size-4 transition-transform group-hover:translate-x-1" />
-						</a> */}
-					</div>
-					<div className="mt-8 flex shrink-0 items-center justify-start gap-2">
-						<Button
-							size="icon"
-							variant="outline"
-							onClick={() => {
-								carouselApi?.scrollPrev();
-							}}
-							disabled={!canScrollPrev}
-							className="disabled:pointer-events-auto"
-						>
-							<ArrowLeft className="size-5" />
-						</Button>
-						<Button
-							size="icon"
-							variant="outline"
-							onClick={() => {
-								carouselApi?.scrollNext();
-							}}
-							disabled={!canScrollNext}
-							className="disabled:pointer-events-auto"
-						>
-							<ArrowRight className="size-5" />
-						</Button>
-					</div>
+			<div className="mb-6 flex flex-col justify-between md:mb-8 md:flex-row md:items-end">
+				<div>
+					<h2 className="mb-2 text-2xl font-semibold md:mb-3 md:text-3xl">{heading}</h2>
+				</div>
+				<div className="mt-4 flex shrink-0 items-center justify-start gap-2 md:mt-0">
+					<Button
+						size="icon"
+						variant="outline"
+						onClick={() => {
+							carouselApi?.scrollPrev();
+						}}
+						disabled={!canScrollPrev}
+						className="disabled:pointer-events-auto"
+					>
+						<ArrowLeft className="size-4" />
+					</Button>
+					<Button
+						size="icon"
+						variant="outline"
+						onClick={() => {
+							carouselApi?.scrollNext();
+						}}
+						disabled={!canScrollNext}
+						className="disabled:pointer-events-auto"
+					>
+						<ArrowRight className="size-4" />
+					</Button>
 				</div>
 			</div>
-			<div className="w-full">
+			<div className="w-full overflow-hidden">
 				<Carousel
 					setApi={setCarouselApi}
 					opts={{
-						breakpoints: {
-							"(max-width: 768px)": {
-								dragFree: true,
-							},
-						},
+						align: "start",
+						loop: true,
 					}}
-					className="relative left-[-1rem]"
 				>
-					<CarouselContent className="-mr-4 ml-8 2xl:ml-[max(8rem,calc(50vw-700px+1rem))] 2xl:mr-[max(0rem,calc(50vw-700px-1rem))]">
+					<CarouselContent className="-ml-2 md:-ml-4">
 						{items.map((item) => (
-							<CarouselItem key={item.id} className="pl-4 md:max-w-[452px]">
+							<CarouselItem key={item.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
 								<a href={item.url} className="group flex flex-col justify-between">
 									<div>
-										<div className="flex aspect-[3/2] overflow-clip rounded-xl">
+										<div className="flex aspect-[3/2] overflow-clip rounded-lg">
 											<div className="flex-1">
 												<div className="relative h-full w-full origin-bottom transition duration-300 group-hover:scale-105">
 													<img
-														src={item.image}
+														src={item.image || "/placeholder.svg"}
 														alt={item.title}
 														className="h-full w-full object-cover object-center"
 													/>
@@ -151,15 +136,15 @@ const Gallery6 = ({
 											</div>
 										</div>
 									</div>
-									<div className="mb-2 line-clamp-3 break-words pt-4 text-lg font-medium md:mb-3 md:pt-4 md:text-xl lg:pt-4 lg:text-2xl">
+									<div className="mb-1 line-clamp-2 break-words pt-3 text-base font-medium md:mb-2 md:text-lg">
 										{item.title}
 									</div>
-									<div className="mb-8 line-clamp-2 text-sm text-muted-foreground md:mb-12 md:text-base lg:mb-9">
+									<div className="mb-4 line-clamp-2 text-xs text-muted-foreground md:mb-6 md:text-sm">
 										{item.summary}
 									</div>
-									<div className="flex items-center text-sm">
-										Read more{" "}
-										<ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
+									<div className="flex items-center text-xs md:text-sm">
+										Lire la suite{" "}
+										<ArrowRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
 									</div>
 								</a>
 							</CarouselItem>

@@ -38,6 +38,7 @@ export const generateMetadata = async (props: {
 	if (!product) {
 		return notFound();
 	}
+	console.log("product", product);
 	const t = await getTranslations("/product.metadata");
 
 	const canonical = new URL(`${publicUrl}/product/${product.metadata.slug}`);
