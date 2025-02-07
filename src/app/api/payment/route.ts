@@ -1,18 +1,19 @@
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
-	const { transactionId, amount, sender } = (await req.json()) as {
+	const { transactionId, amount, senderNumber, serviceProvider } = (await req.json()) as {
 		transactionId: string;
 		amount: string;
-		sender: string;
+		senderNumber: string;
+		serviceProvider: string;
 	};
 
 	//convert txd. amount, sender to numbers
 	const txdNum = Number(transactionId);
 	const amountNum = Number(amount);
-	const senderNum = Number(sender);
+	const senderNum = Number(senderNumber);
 
-	console.log(txdNum, amountNum, senderNum);
+	console.log(txdNum, amountNum, senderNum, serviceProvider);
 
 	if (!txdNum || !amountNum || !senderNum) {
 		return new Response("Missing parameters", { status: 400 });
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
 			data: {
 				txd: transactionId,
 				amount: amountNum,
-				sender: sender,
+				sender: senderNumber,
 				paymentMethod: "local",
 			},
 		});
