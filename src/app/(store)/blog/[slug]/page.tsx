@@ -110,6 +110,9 @@ export default async function Blog(props: {
 					width={1000}
 					height={1000}
 				/>
+				{post.metadata.image === "/fortetfierfortliberteai.png" && (
+					<span className=" text-sm">Image créée par intelligence artificielle à titre illustratif.</span>
+				)}
 			</div>
 			<article
 				className="mdx-component mdx-content text-justify prose dark:prose-invert"

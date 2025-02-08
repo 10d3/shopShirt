@@ -17,6 +17,7 @@ import { AddToCartButton } from "@/ui/add-to-cart-button";
 import { JsonLd, mappedProductToJsonLd } from "@/ui/json-ld";
 import { Markdown } from "@/ui/markdown";
 import { MainProductImage } from "@/ui/products/main-product-image";
+import { Badge } from "@/ui/shadcn/badge";
 import { StickyBottom } from "@/ui/sticky-bottom";
 import { YnsLink } from "@/ui/yns-link";
 import * as Commerce from "commerce-kit";
@@ -115,15 +116,39 @@ export default async function SingleProductPage(props: {
 					<div className="lg:col-span-5 lg:col-start-8">
 						<h1 className="text-3xl font-bold leading-none tracking-tight text-foreground">{product.name}</h1>
 						{product.default_price.unit_amount && (
-							<p className="mt-2 text-2xl font-medium leading-none tracking-tight text-foreground/70">
-								{formatMoney({
-									amount: product.default_price.unit_amount,
-									currency: product.default_price.currency,
-									locale,
-								})}
-							</p>
+							<div className="flex items-baseline space-x-4 my-4">
+								<span className="text-3xl font-bold text-gray-900">
+									{formatMoney({
+										amount: product.default_price.unit_amount,
+										currency: product.default_price.currency,
+										locale,
+									})}
+								</span>
+								<span className="ml-2 text-lg font-medium text-gray-500 line-through">
+									{formatMoney({
+										amount: Number.parseInt(
+											Math.round(
+												product.default_price.unit_amount *
+													discountPercentageToApply[product.metadata.category as Category],
+											).toString(),
+										),
+										currency: product.default_price.currency,
+										locale,
+									})}
+								</span>
+							</div>
 						)}
-						<div className="mt-2">{product.metadata.stock <= 0 && <div>Out of stock</div>}</div>
+						<div className="mt-2">
+							{product.metadata.stock <= 0 ? (
+								<Badge variant="secondary" className="text-sm">
+									En rupture de stock
+								</Badge>
+							) : (
+								<Badge variant="secondary" className="text-sm">
+									En stock
+								</Badge>
+							)}
+						</div>
 					</div>
 
 					<div className="lg:col-span-7 lg:row-span-3 lg:row-start-1">
@@ -280,3 +305,11 @@ async function SimilarProducts({ id }: { id: string }) {
 		</section>
 	);
 }
+
+const discountPercentageToApply = {
+	heritage: 1.167,
+	memoires: 1.5,
+	essentiels: 1.17,
+} as const;
+
+type Category = keyof typeof discountPercentageToApply;
