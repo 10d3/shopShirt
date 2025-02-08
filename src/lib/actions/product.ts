@@ -88,18 +88,148 @@ export async function getProduct(id: string) {
 // 	redirect("/dashboard?step=products");
 // }
 
-export async function updateProduct(id: string, formData: FormData) {
-	const rawData = Object.fromEntries(formData.entries());
-	const validated = ProductSchema.parse(rawData);
+export const updateProduct = async (productId: string, values: ProductFormValues) => {
+	try {
+		// Update main product
+		const mainProduct = await stripe.products.update(productId, {
+			name: values.name,
+			description: values.description,
+			images: values.image,
+			active: values.active,
+			metadata: Object.fromEntries(values.metadata.map((m) => [m.key, m.value])),
+		});
 
-	await stripe.products.update(id, {
-		name: validated.name,
-		description: validated.description,
-	});
+		// Update or create price if price has changed
+		if (mainProduct.default_price && typeof mainProduct.default_price === "string") {
+			const currentPrice = await stripe.prices.retrieve(mainProduct.default_price);
+			if (currentPrice.unit_amount !== Number(values.price) * 100) {
+				const newPrice = await stripe.prices.create({
+					product: productId,
+					currency: "usd",
+					unit_amount: Number(values.price) * 100,
+				});
 
-	revalidatePath("/dashboard?step=products");
-	redirect("/dashboard?step=products");
-}
+				await stripe.products.update(productId, {
+					default_price: newPrice.id,
+				});
+
+				// Archive old price
+				await stripe.prices.update(currentPrice.id, { active: false });
+			}
+		}
+
+		// Convert to plain object
+		const plainProduct = {
+			id: mainProduct.id,
+			name: mainProduct.name,
+			description: mainProduct.description,
+			active: mainProduct.active,
+			metadata: mainProduct.metadata,
+			default_price: mainProduct.default_price,
+			images: mainProduct.images,
+			created: mainProduct.created,
+			updated: mainProduct.updated,
+		};
+
+		// Handle variants
+		if (values.variants.length > 0) {
+			// Get existing variants
+			const existingVariants = await stripe.products.search({
+				query: `metadata['parent_id']:'${productId}'`,
+			});
+
+			// Create a map of existing variants by their attribute combination
+			const existingVariantsMap = new Map(
+				existingVariants.data.map((variant) => [
+					`${variant.metadata.variant_key}:${variant.metadata.variant_value}`,
+					variant,
+				]),
+			);
+
+			// Update or create variants
+			await Promise.all(
+				values.variants.map(async (variant) => {
+					const variantKey = `${variant.attributes.key}:${variant.attributes.value}`;
+					const existingVariant = existingVariantsMap.get(variantKey);
+
+					if (existingVariant) {
+						// Update existing variant
+						const updatedVariant = await stripe.products.update(existingVariant.id, {
+							name: `${values.name}`,
+							description: values.description,
+							images: variant.image,
+							active: values.active,
+							metadata: {
+								...Object.fromEntries(values.metadata.map((m) => [m.key, m.value])),
+								variant_key: variant.attributes.key,
+								variant_value: variant.attributes.value,
+								parent_id: productId,
+							},
+						});
+
+						// Update price if changed
+						if (existingVariant.default_price && typeof existingVariant.default_price === "string") {
+							const currentPrice = await stripe.prices.retrieve(existingVariant.default_price);
+							if (currentPrice.unit_amount !== Number(variant.price) * 100) {
+								const newPrice = await stripe.prices.create({
+									product: existingVariant.id,
+									currency: variant.currency,
+									unit_amount: Number(variant.price) * 100,
+								});
+
+								await stripe.products.update(existingVariant.id, {
+									default_price: newPrice.id,
+								});
+
+								// Archive old price
+								await stripe.prices.update(currentPrice.id, { active: false });
+							}
+						}
+
+						return updatedVariant;
+					} else {
+						// Create new variant
+						return await stripe.products.create({
+							name: `${values.name}`,
+							description: values.description,
+							images: variant.image,
+							default_price_data: {
+								currency: variant.currency,
+								unit_amount: Number(variant.price) * 100,
+							},
+							active: values.active,
+							metadata: {
+								...Object.fromEntries(values.metadata.map((m) => [m.key, m.value])),
+								variant_key: variant.attributes.key,
+								variant_value: variant.attributes.value,
+								parent_id: productId,
+							},
+						});
+					}
+				}),
+			);
+
+			// Archive removed variants
+			const newVariantKeys = new Set(
+				values.variants.map((variant) => `${variant.attributes.key}:${variant.attributes.value}`),
+			);
+
+			await Promise.all(
+				existingVariants.data
+					.filter(
+						(variant) =>
+							!newVariantKeys.has(`${variant.metadata.variant_key}:${variant.metadata.variant_value}`),
+					)
+					.map((variant) => stripe.products.update(variant.id, { active: false })),
+			);
+		}
+
+		return plainProduct;
+	} catch (error) {
+		console.error("Error updating product:", error);
+		throw new Error("Failed to update product");
+	}
+};
 
 // lib/actions/products.ts
 export async function deleteProduct(_prevState: unknown, formData: FormData): Promise<{ error?: string }> {

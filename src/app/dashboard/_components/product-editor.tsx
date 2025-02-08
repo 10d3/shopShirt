@@ -92,7 +92,7 @@ function transformStripeProduct(product: StripeProduct | null): ProductFormValue
 		name: product.name || "",
 		category: "",
 		description: product.description || "",
-		price: "0",
+		price: product.price?.toString() || "0",
 		active: product.active || false,
 		image: product.image || [],
 		variants: product.variants || [],
@@ -131,15 +131,6 @@ export default function ProductEditor({
 
 	async function onSubmit(values: ProductFormValues) {
 		try {
-			// console.log(values);
-			// const res = await fetch("/api/products" + (initialData?.id ? `/${initialData.id}` : ""), {
-			// 	method: initialData?.id ? "PUT" : "POST",
-			// 	headers: {
-			// 		"Content-Type": "application/json",
-			// 	},
-			// 	body: JSON.stringify(values),
-			// });
-
 			const res = await createProduct(values);
 
 			if (res.id) {
