@@ -5,16 +5,16 @@ import type { ProductFormValues } from "@/app/dashboard/_components/product-edit
 import stripe from "@/lib/actions/stripe";
 import type { StripePrice } from "@/lib/types";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import type Stripe from "stripe";
-import { z } from "zod";
+// import { z } from "zod";
 
-const ProductSchema = z.object({
-	name: z.string().min(2),
-	description: z.string().optional(),
-	price: z.string().regex(/^\d+(\.\d{1,2})?$/),
-	currency: z.string().length(3),
-});
+// const ProductSchema = z.object({
+// 	name: z.string().min(2),
+// 	description: z.string().optional(),
+// 	price: z.string().regex(/^\d+(\.\d{1,2})?$/),
+// 	currency: z.string().length(3),
+// });
 
 export async function getProducts() {
 	const products = await stripe.products.list({ limit: 100 });
