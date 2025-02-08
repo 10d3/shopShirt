@@ -61,7 +61,7 @@ Description: ${product.description}
 
 const r = await trieve.createChunk(chunks);
 
-console.log("Done", r);
+console.log("Done ", r);
 
 export type TrieveProductMetadata = {
 	name: string;
