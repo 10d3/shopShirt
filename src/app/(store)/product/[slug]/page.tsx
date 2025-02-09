@@ -52,7 +52,24 @@ export const generateMetadata = async (props: {
 	return {
 		title: t("title", { productName }),
 		description: product.description,
+		keywords: [product.metadata.category, product.metadata.variant, product.name].filter(Boolean),
 		alternates: { canonical },
+		openGraph: {
+			title: t("title", { productName }),
+			description: product.description as string,
+			images: product.images.map((image) => ({ url: image })),
+			url: `https://fortetfier.com/product/${product.metadata.slug}`,
+		},
+		robots: {
+			index: true,
+			follow: true,
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: t("title", { productName }),
+			description: product.description as string,
+			images: product.images.map((image) => ({ url: image })),
+		},
 	} satisfies Metadata;
 };
 
