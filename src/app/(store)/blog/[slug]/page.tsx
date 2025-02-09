@@ -111,7 +111,9 @@ export default async function Blog(props: {
 					height={1000}
 				/>
 				{post.metadata.image === "/fortetfierfortliberteai.png" && (
-					<span className=" text-sm">Image créée par intelligence artificielle à titre illustratif.</span>
+					<span className=" text-sm text-muted-foreground/90">
+						Image créée par intelligence artificielle à titre illustratif.
+					</span>
 				)}
 			</div>
 			<article

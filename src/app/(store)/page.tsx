@@ -14,8 +14,13 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function Home() {
-	const products = await Commerce.productBrowse({ first: 6 });
+	const allProducts = await Commerce.productBrowse({ first: 100 });
 	const t = await getTranslations("/");
+
+	const categories = ["heritage", "memoires", "essentiels"];
+	const products = categories.flatMap((category) =>
+		allProducts.filter((product) => product.metadata.category === category).slice(0, 3),
+	);
 
 	return (
 		<main>
