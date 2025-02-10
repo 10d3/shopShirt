@@ -84,6 +84,8 @@ export async function increaseQuantity(productId: string) {
 		cartId: cart.cart.id,
 		operation: "INCREASE",
 	});
+	// Re-fetch the updated cart
+	return await getCartFromCookiesAction(); // Return the updated cart
 }
 
 export async function decreaseQuantity(productId: string) {
@@ -96,6 +98,8 @@ export async function decreaseQuantity(productId: string) {
 		cartId: cart.cart.id,
 		operation: "DECREASE",
 	});
+	// Re-fetch the updated cart
+	return await getCartFromCookiesAction(); // Return the updated cart
 }
 
 export async function setQuantity({
@@ -111,6 +115,8 @@ export async function setQuantity({
 	if (!cart) {
 		throw new Error("Cart not found");
 	}
+	console.log("Setting quantity to", quantity);
+	console.log("cart", cart);
 	await Commerce.cartSetQuantity({ productId, cartId, quantity });
 }
 

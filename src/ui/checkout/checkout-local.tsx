@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createOrder } from "@/lib/actions/order";
-import { pointDeRelais } from "@/lib/utils";
+import { calculateCartTotalPossiblyWithTax, pointDeRelais } from "@/lib/utils";
 import {
 	Select,
 	SelectContent,
@@ -21,22 +21,36 @@ import {
 import type * as Commerce from "commerce-kit";
 import { CreditCard, Loader2, MapPin, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useActionState } from "react";
 
 const EXCHANGE_RATE = 132; // HTG to USD
 
 export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 	const [paymentStatus, setPaymentStatus] = useState<"idle" | "success" | "error">("idle");
-	const [amount, setAmount] = useState((cart.cart.amount * EXCHANGE_RATE) / 100);
-	const amountUTGN = Math.round(amount);
+	// const [amountUTGN, setAmount] = useState(Math.round((cart.cart.amount * EXCHANGE_RATE) / 100));
+	// const amountUTGN = Math.round(amount);
 
-	useEffect(() => {
-		setAmount((cart.cart.amount * EXCHANGE_RATE) / 100);
-	}, [cart.cart.amount]);
+	const total = calculateCartTotalPossiblyWithTax(cart);
+	// setAmount(Math.round((total * EXCHANGE_RATE) / 100));
+	console.log("Total : ", total);
+	const amountUTGN = Math.round((total * EXCHANGE_RATE) / 100);
 
-	console.log(amount);
-	console.log(cart.cart.amount);
+	// useEffect(() => {
+	// 	async function test() {
+	// 		const cart = await getCartFromCookiesAction();
+	// 		if (!cart) return;
+	// 		setAmount(Math.round((cart.cart.amount * EXCHANGE_RATE) / 100));
+	// 	}
+	// 	// const cart = await getCartFromCookiesAction();
+	// 	// setAmount(Math.round((cart.cart.amount * EXCHANGE_RATE) / 100));
+	// 	test();
+	// }, [cart.cart.amount]);
+
+	console.log("Amount : ", cart.cart.amount);
+
+	// console.log(amountUTGN);
+	console.log("Details : ", amountUTGN);
 
 	const router = useRouter();
 

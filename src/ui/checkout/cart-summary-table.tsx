@@ -41,6 +41,8 @@ export const CartSummaryTable = ({ cart, locale }: { cart: Commerce.Cart; locale
 	const currency = optimisticCart.lines[0]!.product.default_price.currency;
 	const total = calculateCartTotalPossiblyWithTax(optimisticCart);
 
+	console.log("optimisticCart", optimisticCart);
+
 	return (
 		<form>
 			<Table>

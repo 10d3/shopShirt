@@ -37,6 +37,7 @@ export const CartItemQuantity = ({
 		const doWork = async () => {
 			try {
 				const modifier = action === "INCREASE" ? 1 : -1;
+				console.log("Modifier : ", modifier);
 				await setQuantity({ cartId, productId, quantity: quantity + modifier });
 				await elements?.fetchUpdates();
 				router.refresh();

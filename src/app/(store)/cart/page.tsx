@@ -16,6 +16,8 @@ export default async function CartPage() {
 	const cart = await getCartFromCookiesAction();
 	const headersList = await headers();
 
+	console.log("Cart from CartPage", cart);
+
 	// Get country code from Vercel's edge headers
 	const countryCode = headersList.get("x-vercel-ip-country") || "US";
 
