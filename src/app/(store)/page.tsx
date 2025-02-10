@@ -36,19 +36,24 @@ export default async function Home() {
 							{t("hero.action")}
 						</YnsLink>
 					</div>
-					<Image
-						alt="Cup of Coffee"
-						loading="eager"
-						priority={true}
-						className="rounded"
-						height={450}
-						width={450}
-						src="https://files.stripe.com/links/MDB8YWNjdF8xT3BaeG5GSmNWbVh6bURsfGZsX3Rlc3RfaDVvWXowdU9ZbWlobUIyaHpNc1hCeDM200NBzvUjqP"
-						style={{
-							objectFit: "cover",
-						}}
-						sizes="(max-width: 640px) 70vw, 450px"
-					/>
+					<div className="image-container">
+						<Image
+							alt="Cup of Coffee"
+							loading="eager"
+							priority={true}
+							className="rounded"
+							height={450}
+							width={450}
+							src="https://6ay8a7s9vf.ufs.sh/f/XID4kzR81z3MX6t2jH81z3MqgIFbf69EVRniB4lDNxyY8uOQ"
+							style={{
+								objectFit: "cover",
+								// Vertical fade (bottom transparency)
+								WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 95%)",
+								maskImage: "linear-gradient(to bottom, black 70%, transparent 95%)",
+							}}
+							sizes="(max-width: 640px) 70vw, 450px"
+						/>
+					</div>
 				</div>
 			</section>
 
