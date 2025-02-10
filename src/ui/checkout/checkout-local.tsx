@@ -21,17 +21,22 @@ import {
 import type * as Commerce from "commerce-kit";
 import { CreditCard, Loader2, MapPin, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActionState } from "react";
 
 const EXCHANGE_RATE = 132; // HTG to USD
 
 export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 	const [paymentStatus, setPaymentStatus] = useState<"idle" | "success" | "error">("idle");
-	const amountHTG = (cart.cart.amount / 100) * EXCHANGE_RATE;
-	console.log(amountHTG);
+	const [amount, setAmount] = useState((cart.cart.amount * EXCHANGE_RATE) / 100);
+	const amountUTGN = Math.round(amount);
+
+	useEffect(() => {
+		setAmount((cart.cart.amount * EXCHANGE_RATE) / 100);
+	}, [cart.cart.amount]);
+
+	console.log(amount);
 	console.log(cart.cart.amount);
-	const amountUTGN = Math.round(amountHTG);
 
 	const router = useRouter();
 
