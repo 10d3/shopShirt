@@ -45,7 +45,7 @@ export const metadata = {
 		siteName: "Fort&Fier",
 		images: [
 			{
-				url: "https://amherley.dev/blog.png", // Replace with your OpenGraph image URL
+				url: "https://fortetfier.com/fl.jpg", // Replace with your OpenGraph image URL
 				width: 1200,
 				height: 630,
 				alt: "Chroniques",
@@ -63,7 +63,7 @@ export const metadata = {
 		site: "@Robeatns", // Replace with your Twitter handle
 		images: [
 			{
-				url: "https://amherley.dev/blog.png", // Replace with the same OpenGraph image
+				url: "https://fortetfier.com/fl.jpg", // Replace with the same OpenGraph image
 				alt: "Chroniques",
 			},
 		],
