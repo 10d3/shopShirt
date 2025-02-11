@@ -22,7 +22,7 @@ import {
 	useElements,
 	useStripe,
 } from "@stripe/react-stripe-js";
-import type * as Commerce from "commerce-kit";
+import * as Commerce from "commerce-kit";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type ChangeEvent, type FormEventHandler, useRef, useState, useTransition } from "react";
@@ -218,6 +218,8 @@ const PaymentForm = ({
 					payment_intent: result.paymentIntent.id,
 					payment_intent_client_secret: result.paymentIntent.client_secret ?? "",
 				});
+				const order = await Commerce.orderGet(result.paymentIntent.id);
+				console.log("Order : ", order);
 				router.push("/order/success?" + params.toString());
 				// deliberately not setting isLoading to false here to prevent the button to flicker back to "Pay now" before redirecting
 				// setIsLoading(false);

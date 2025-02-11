@@ -1,5 +1,5 @@
-import AccessoriesImage from "@/images/accessories.jpg";
-import ApparelImage from "@/images/apparel.jpg";
+import AccessoriesImage from "@/images/essentiels.png";
+import ApparelImage from "@/images/heritage.png";
 
 export const config = {
 	categories: [
