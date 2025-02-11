@@ -44,7 +44,7 @@ export default async function Home() {
 							className="rounded"
 							height={450}
 							width={450}
-							src="https://6ay8a7s9vf.ufs.sh/f/XID4kzR81z3MX6t2jH81z3MqgIFbf69EVRniB4lDNxyY8uOQ"
+							src="https://6ay8a7s9vf.ufs.sh/f/XID4kzR81z3MJRINodV41NkXFyAgWqjM7O05UGTdLJnvuzhY"
 							style={{
 								objectFit: "cover",
 								// Vertical fade (bottom transparency)

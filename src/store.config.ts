@@ -14,7 +14,7 @@ export const config = {
 	},
 
 	contact: {
-		email: "support@yourstore.com",
+		email: "contact@fortetfier.com",
 		phone: "+1 (555) 111-4567",
 		address: "123 Store Street, City, Country",
 	},
