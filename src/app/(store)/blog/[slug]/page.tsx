@@ -40,9 +40,7 @@ export async function generateMetadata(props: {
 			url: `https://fortetfier.com/blog/${post.slug}`,
 			images: [
 				{
-					url: post.metadata.image[0].startsWith("/")
-						? `https://fortetfier.com${post.metadata.image[0]}`
-						: post.metadata.image[0],
+					url: post.metadata.image ? `${post.metadata.image}` : `${post.metadata.image}`,
 				},
 			],
 		},
@@ -112,7 +110,8 @@ export default async function Blog(props: {
 					width={1000}
 					height={1000}
 				/>
-				{post.metadata.image === "/fortetfierfortliberteai.png" && (
+				{post.metadata.image ===
+					"https://6ay8a7s9vf.ufs.sh/f/XID4kzR81z3MqVhDNW9Wm5nt7i9PEUXw03BpR6vx8SeOMafd" && (
 					<span className=" text-sm text-muted-foreground/90">
 						Image créée par intelligence artificielle à titre illustratif.
 					</span>
