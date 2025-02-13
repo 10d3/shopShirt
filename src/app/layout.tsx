@@ -43,7 +43,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 				)}
 				<Script
 					defer
-					data-domain="amherley.dev"
+					data-domain="fortetfier.com"
 					src="https://plausible.amherley.dev/js/script.hash.outbound-links.pageview-props.tagged-events.js"
 				/>
 				<Script id="plausible-script">
