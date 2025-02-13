@@ -27,6 +27,13 @@ export default async function AllProductsPage() {
 	);
 	const t = await getTranslations("/products.page");
 
+	const filterNamesDescriptions = uniqueProducts.map((product) => {
+		const { name, description } = product;
+		return { name, description };
+	});
+
+	console.log(JSON.stringify(filterNamesDescriptions, null, 2));
+
 	// console.log("products", products);
 
 	return (

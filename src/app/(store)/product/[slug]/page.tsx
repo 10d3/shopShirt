@@ -326,7 +326,7 @@ async function SimilarProducts({ id }: { id: string }) {
 const discountPercentageToApply = {
 	heritage: 1.167,
 	memoires: 1.5,
-	essentiels: 1.17,
+	essentiels: 1.25,
 } as const;
 
 type Category = keyof typeof discountPercentageToApply;
