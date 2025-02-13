@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createOrder } from "@/lib/actions/order";
-import { calculateCartTotalPossiblyWithTax, pointDeRelais } from "@/lib/utils";
+import { calculateCartTotalPossiblyWithTax, getFee, pointDeRelais } from "@/lib/utils";
 import {
 	Select,
 	SelectContent,
@@ -34,7 +34,8 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 	const total = calculateCartTotalPossiblyWithTax(cart);
 	// setAmount(Math.round((total * EXCHANGE_RATE) / 100));
 	console.log("Total : ", total);
-	const amountUTGN = Math.round((total * EXCHANGE_RATE) / 100);
+	const fee = getFee(total) ?? 0;
+	const amountUTGN = Math.round((total * EXCHANGE_RATE) / 100 + fee);
 
 	// useEffect(() => {
 	// 	async function test() {

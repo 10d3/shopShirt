@@ -1,6 +1,6 @@
 import { publicUrl } from "@/env.mjs";
 import { getTranslations } from "@/i18n/server";
-// import { deleteProduct, getProducts, getShops, publishProduct } from "@/lib/kit/printify";
+// import { getProducts, publishProduct } from "@/lib/kit/printify";
 import StoreConfig from "@/store.config";
 import BlogTestimonial from "@/ui/blog-animated";
 import { CategoryBox } from "@/ui/category-box";

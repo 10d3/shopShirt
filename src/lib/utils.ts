@@ -268,3 +268,26 @@ export function formatDate(date: string) {
 		return `${fullDate} (${yearsAgo}y ago)`;
 	}
 }
+
+const fees = [
+	{ to: 99, fee: 0 },
+	{ to: 249, fee: 0 },
+	{ to: 499, fee: 5 },
+	{ to: 999, fee: 10 },
+	{ to: 1999, fee: 25 },
+	{ to: 3999, fee: 35 },
+	{ to: 7999, fee: 50 },
+	{ to: 11999, fee: 60 },
+	{ to: 19999, fee: 70 },
+	{ to: 39999, fee: 75 },
+	{ to: 59999, fee: 100 },
+	{ to: 74999, fee: 120 },
+] satisfies { to: number; fee: number }[];
+
+export function getFee(amount: number): number | null {
+	if (!amount) {
+		return null;
+	}
+	const range = fees.find((f) => amount <= f.to);
+	return range ? range.fee : null;
+}
