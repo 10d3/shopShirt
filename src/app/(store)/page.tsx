@@ -1,6 +1,6 @@
 import { publicUrl } from "@/env.mjs";
 import { getTranslations } from "@/i18n/server";
-import { deleteProduct, getProducts, getShops, publishProduct } from "@/lib/kit/printify";
+// import { deleteProduct, getProducts, getShops, publishProduct } from "@/lib/kit/printify";
 import StoreConfig from "@/store.config";
 import BlogTestimonial from "@/ui/blog-animated";
 import { CategoryBox } from "@/ui/category-box";
@@ -23,33 +23,33 @@ export default async function Home() {
 		allProducts.filter((product) => product.metadata.category === category).slice(0, 3),
 	);
 
-	const productsP = await getProducts("20672498");
-	const allProductsP = productsP.data.map((product) => {
-		const enabledVariants = product.variants.filter((v) => v.is_enabled === true);
+	// const productsP = await getProducts("20672498");
+	// const allProductsP = productsP.data.map((product) => {
+	// 	const enabledVariants = product.variants.filter((v) => v.is_enabled === true);
 
-		return {
-			productId: product.id, // Assuming the product has an 'id' property
-			productName: product.title, // Assuming the product has a 'name' property
-			variants: enabledVariants.map((variant) => ({
-				id: variant.id, // Assuming each variant has an 'id' property
-				title: variant.title, // Assuming each variant has a 'title' property
-			})),
-		};
-	});
+	// 	return {
+	// 		productId: product.id, // Assuming the product has an 'id' property
+	// 		productName: product.title, // Assuming the product has a 'name' property
+	// 		variants: enabledVariants.map((variant) => ({
+	// 			id: variant.id, // Assuming each variant has an 'id' property
+	// 			title: variant.title, // Assuming each variant has a 'title' property
+	// 		})),
+	// 	};
+	// });
 
-	const test = allProductsP.forEach(async (product) => {
-		const result = await publishProduct("20672498", product.productId.toString());
-		console.log(result);
-		return result;
-	});
+	// const test = allProductsP.forEach(async (product) => {
+	// 	const result = await publishProduct("20672498", product.productId.toString());
+	// 	console.log(result);
+	// 	return result;
+	// });
 
-	console.log(test);
+	// console.log(test);
 
-	const dleteTest = await deleteProduct("20672498", "67ab6563090afd919b0b9e16");
-	console.log(dleteTest);
+	// const dleteTest = await deleteProduct("20672498", "67ab6563090afd919b0b9e16");
+	// console.log(dleteTest);
 
-	// Log the result as JSON
-	console.log(JSON.stringify(allProductsP, null, 2));
+	// // Log the result as JSON
+	// console.log(JSON.stringify(allProductsP, null, 2));
 
 	return (
 		<main>
