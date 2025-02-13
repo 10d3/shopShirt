@@ -41,6 +41,18 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 						data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
 					/>
 				)}
+				<Script
+					defer
+					data-domain="amherley.dev"
+					src="https://plausible.amherley.dev/js/script.hash.outbound-links.pageview-props.tagged-events.js"
+				/>
+				<Script id="plausible-script">
+					{`
+            window.plausible = window.plausible || function() {
+              (window.plausible.q = window.plausible.q || []).push(arguments)
+            }
+          `}
+				</Script>
 				<SpeedInsights />
 				<Analytics />
 			</body>
