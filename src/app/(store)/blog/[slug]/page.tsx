@@ -40,7 +40,9 @@ export async function generateMetadata(props: {
 			url: `https://fortetfier.com/blog/${post.slug}`,
 			images: [
 				{
-					url: post.metadata.image ? `${post.metadata.image}` : `${post.metadata.image}`,
+					url: post.metadata.image[0].startsWith("/")
+						? `https://fortetfier.com${post.metadata.image[0]}`
+						: post.metadata.image[0],
 				},
 			],
 		},

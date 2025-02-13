@@ -18,7 +18,7 @@ export default async function Home() {
 	const allProducts = await Commerce.productBrowse({ first: 100 });
 	const t = await getTranslations("/");
 
-	const categories = ["heritage", "memoires", "essentiels"];
+	const categories = ["heritage", "essentiels", "memoires"];
 	const products = categories.flatMap((category) =>
 		allProducts.filter((product) => product.metadata.category === category).slice(0, 3),
 	);

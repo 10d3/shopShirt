@@ -15,10 +15,10 @@ const sections = [
 	{
 		header: "Support",
 		links: [
-			{
-				label: "Features",
-				href: "https://yournextstore.com/#features",
-			},
+			// {
+			// 	label: "Features",
+			// 	href: "https://yournextstore.com/#features",
+			// },
 			{
 				label: "A propos de nous",
 				href: "https://fortetfier.com/about",
