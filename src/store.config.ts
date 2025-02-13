@@ -1,11 +1,12 @@
+import ApparelImage from "@/images/aaapparel.png";
 import AccessoriesImage from "@/images/essentiels.png";
-import ApparelImage from "@/images/heritage.png";
+import Memoire from "@/images/memoire.png";
 
 export const config = {
 	categories: [
 		{ name: "Mode inspirée de Fort-Liberté", slug: "heritage", image: ApparelImage },
 		{ name: "Accessoires qui font la différence", slug: "essentiels", image: AccessoriesImage },
-		{ name: "Souvenirs emblématiques", slug: "memoires", image: AccessoriesImage },
+		{ name: "Souvenirs emblématiques", slug: "memoires", image: Memoire },
 	],
 
 	social: {
