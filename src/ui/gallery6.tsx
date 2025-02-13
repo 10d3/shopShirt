@@ -84,7 +84,7 @@ const Gallery6 = ({
 		<section className="py-6">
 			<div className="mb-6 flex flex-col justify-between md:mb-8 md:flex-row md:items-end">
 				<div>
-					<h2 className="mb-2 text-2xl font-semibold md:mb-3 md:text-3xl">{heading}</h2>
+					<h2 className="mb-2 text-2xl font-semibold md:mb-3 md:text-3xl line-clamp-1">{heading}</h2>
 				</div>
 				<div className="mt-4 flex shrink-0 items-center justify-start gap-2 md:mt-0">
 					<Button

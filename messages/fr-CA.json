@@ -34,7 +34,7 @@
 	"/.hero.title": "Montrez votre amour pour Fort-Liberté, où que vous alliez !",
 	"/.hero.description": "Des T-shirts et accessoires uniques qui célèbrent la culture, l'histoire et la fierté de Fort-Liberté.",
 	"/.hero.action": "Découvrir maintenant",
-	"/.hero.link": "/category/accessoires",
+	"/.hero.link": "/products",
 	"/search.notFound.title": "Aucun résultat trouvé pour « {query} »",
 	"/search.notFound.description": "Désolé, nous n'avons trouvé aucun résultat correspondant à votre recherche. Veuillez affiner votre recherche.",
 	"/search.metadata.title": "Recherche : {query} · Your Next Store",

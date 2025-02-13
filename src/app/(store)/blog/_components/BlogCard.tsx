@@ -33,7 +33,7 @@ export function BlogPostCard({ post, featured = false }: { post: BlogPost; featu
 			</div>
 			<div className={`flex flex-col ${featured ? "lg:w-1/2" : ""}`}>
 				<CardHeader>
-					<h2 className={`font-bold line-clamp-2 ${featured ? "text-2xl" : "text-xl"}`}>
+					<h2 className={`font-bold line-clamp-1 ${featured ? "text-2xl" : "text-xl"}`}>
 						{post.metadata.title || "Sans titre"}
 					</h2>
 				</CardHeader>

@@ -170,6 +170,22 @@ export const getProduct = async (shopId: string, productId: string): Promise<Pro
 	}
 };
 
+export const deleteProduct = async (shopId: string, productId: string): Promise<void> => {
+	try {
+		const response = await fetch(`${PRINTIFY_API_URL}/shops/${shopId}/products/${productId}.json`, {
+			method: "DELETE",
+			headers,
+		});
+
+		if (response.status !== 204) {
+			await handleRequest<unknown>(response);
+		}
+	} catch (error) {
+		console.error("[Printify] Error deleting product:", error);
+		throw error;
+	}
+};
+
 export const createOrder = async (shopId: string, orderData: Order): Promise<Order> => {
 	try {
 		const response = await fetch(`${PRINTIFY_API_URL}/shops/${shopId}/orders.json`, {
@@ -240,6 +256,72 @@ export const getShippingOptions = async (shopId: string, productId: string): Pro
 		return await handleRequest<ShippingOption[]>(response);
 	} catch (error) {
 		console.error("[Printify] Error fetching shipping options:", error);
+		throw error;
+	}
+};
+
+export const getShops = async () => {
+	try {
+		const response = await fetch(`${PRINTIFY_API_URL}/shops.json`, {
+			method: "GET",
+			headers,
+		});
+		return await handleRequest(response);
+	} catch (error) {
+		console.error("[Printify] Error fetching shops:", error);
+		throw error;
+	}
+};
+
+export const getBlueprints = async () => {
+	try {
+		const response = await fetch(`${PRINTIFY_API_URL}/blueprints.json`, {
+			method: "GET",
+			headers,
+		});
+		return await handleRequest(response);
+	} catch (error) {
+		console.error("[Printify] Error fetching blueprints:", error);
+		throw error;
+	}
+};
+
+export const getBlueprint = async (blueprintId: string) => {
+	try {
+		const response = await fetch(`${PRINTIFY_API_URL}/blueprints/${blueprintId}.json`, {
+			method: "GET",
+			headers,
+		});
+		return await handleRequest(response);
+	} catch (error) {
+		console.error("[Printify] Error fetching blueprint:", error);
+		throw error;
+	}
+};
+
+export const publishProduct = async (shopId: string, productId: string): Promise<void> => {
+	const publishData = {
+		title: true,
+		description: true,
+		images: true,
+		variants: true,
+		tags: true,
+		keyFeatures: true,
+		shipping_template: true,
+	};
+
+	try {
+		const response = await fetch(`${PRINTIFY_API_URL}/shops/${shopId}/products/${productId}/publish.json`, {
+			method: "POST",
+			headers,
+			body: JSON.stringify(publishData),
+		});
+
+		if (response.status !== 204) {
+			await handleRequest<unknown>(response);
+		}
+	} catch (error) {
+		console.error("[Printify] Error publishing product:", error);
 		throw error;
 	}
 };
