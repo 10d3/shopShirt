@@ -3,11 +3,17 @@ import { getLocale, getTranslations } from "@/i18n/server";
 import * as Commerce from "commerce-kit";
 import type { ReactNode } from "react";
 
+import { auth } from "@/lib/auth/auth";
 import { CartEmpty } from "@/ui/checkout/cart-empty";
 import { CartSummaryTable } from "@/ui/checkout/cart-summary-table";
 import { StripeElementsContainer } from "@/ui/checkout/stripe-elements-container";
+import { redirect } from "next/navigation";
 
 export default async function CartLayout({ children }: { children: ReactNode }) {
+	const user = await auth();
+	if (!user) {
+		redirect("/login");
+	}
 	const cart = await getCartFromCookiesAction();
 	if (!cart?.cart.client_secret || cart.lines.length === 0) {
 		return <CartEmpty />;

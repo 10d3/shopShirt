@@ -125,7 +125,22 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 				</div>
 
 				<div className="bg-muted p-4 rounded-md">
-					<p className="font-mono md:text-lg text-[1rem] font-bold">{`*202*509XXXXXXXX*${amountUTGN}*codeSecert#`}</p>
+					<p
+						className="font-mono md:text-lg text-[1rem] font-bold cursor-pointer hover:bg-muted-foreground/10 transition-colors"
+						onClick={() => {
+							const text = `*202*509XXXXXXXX*${amountUTGN}*codeSecert#`;
+							navigator.clipboard
+								.writeText(text)
+								.then(() => {
+									alert("Copied to clipboard!");
+								})
+								.catch((err) => {
+									console.error("Failed to copy: ", err);
+								});
+						}}
+					>
+						{`*202*509XXXXXXXX*${amountUTGN}*codeSecert#`}
+					</p>
 				</div>
 
 				{paymentStatus !== "idle" && (
@@ -172,7 +187,7 @@ export const CheckoutLocal = ({ cart }: { cart: Commerce.Cart }) => {
 							<MapPin className="w-4 h-4" />
 							<span>Point de relais</span>
 						</Label>
-						<Select defaultValue="1" name="pointRelais" required>
+						<Select name="pointRelais" required>
 							<SelectTrigger>
 								<SelectValue placeholder={"Choisir un point de relais"} />
 							</SelectTrigger>
