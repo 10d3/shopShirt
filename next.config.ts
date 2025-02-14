@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
 			{ hostname: "6ay8a7s9vf.ufs.sh" },
 			{ hostname: "lescientifique.org" },
 			{ hostname: "images.pexels.com" },
+			{ hostname: "haitiwonderland.com" },
 		],
 		formats: ["image/avif", "image/webp"],
 	},

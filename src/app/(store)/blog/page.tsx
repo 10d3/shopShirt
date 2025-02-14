@@ -98,6 +98,8 @@ export default async function BlogPage(props: {
 		.map((post) => post.metadata.category)
 		.filter((category, index, categories) => categories.indexOf(category) === index);
 
+	const postALaUne = posts[posts.length - 1];
+
 	return (
 		<div className="min-h-screen bg-background">
 			<HeroSection />
@@ -108,16 +110,18 @@ export default async function BlogPage(props: {
 				<section id="featured" className="mb-16">
 					<h2 className="text-3xl font-bold mb-8">Article à la une</h2>
 					{posts.length > 0 && (
-						<BlogPostCard
-							post={
-								posts[posts.length - 1] as {
-									metadata: { [key: string]: string };
-									source: string;
-									slug: string;
+						<Link href={`/blog/${postALaUne?.slug}`}>
+							<BlogPostCard
+								post={
+									posts[posts.length - 1] as {
+										metadata: { [key: string]: string };
+										source: string;
+										slug: string;
+									}
 								}
-							}
-							featured={true}
-						/>
+								featured={true}
+							/>
+						</Link>
 					)}
 				</section>
 
