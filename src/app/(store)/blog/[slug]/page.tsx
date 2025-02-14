@@ -111,11 +111,16 @@ export default async function Blog(props: {
 					height={1000}
 				/>
 				{post.metadata.image ===
-					"https://6ay8a7s9vf.ufs.sh/f/XID4kzR81z3MqVhDNW9Wm5nt7i9PEUXw03BpR6vx8SeOMafd" && (
+				"https://6ay8a7s9vf.ufs.sh/f/XID4kzR81z3MqVhDNW9Wm5nt7i9PEUXw03BpR6vx8SeOMafd" ? (
 					<span className=" text-sm text-muted-foreground/90">
 						Image créée par intelligence artificielle à titre illustratif.
 					</span>
-				)}
+				) : post.metadata.image ===
+					"https://haitiwonderland.com/assets/images/upload/post/haiti_haiti--fort-liberte_1706973352_0.jpg" ? (
+					<span className=" text-sm text-muted-foreground/90">
+						Kredi : Haitian culture is cool (Facebook)
+					</span>
+				) : null}
 			</div>
 			<article
 				className="mdx-component mdx-content text-justify prose dark:prose-invert"
