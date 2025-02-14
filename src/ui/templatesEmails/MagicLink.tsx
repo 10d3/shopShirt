@@ -27,8 +27,8 @@ export default function MagicLink({ url, host }: EmailTemplateProps): React.Reac
 				}}
 			>
 				<img
-					src="https://sayitai.com/_next/image?url=%2FPlanD.png&w=2048&q=75"
-					alt="SayItAI Logo"
+					src="https://cb1u117vvu.ufs.sh/f/4lPHsyh67qxbFHeKAlofmo5ahkcYyOpiAl7tNeRWJ9ISnbGT"
+					alt="Fortetfier Logo"
 					width="150"
 					style={{
 						display: "block",
