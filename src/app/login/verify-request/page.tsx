@@ -71,9 +71,9 @@ export default function VerifyRequest() {
 						<div className="flex items-center justify-center w-12 h-12 mx-auto bg-primary/10 rounded-full">
 							<Mail className="w-6 h-6 text-primary" />
 						</div>
-						<CardTitle className="text-center mt-4">Check your email</CardTitle>
+						<CardTitle className="text-center mt-4">Vérifiez votre email</CardTitle>
 						<CardDescription className="text-center">
-							We&apos;ve sent a verification link to your email
+							Nous avons envoyé un lien de vérification à votre email
 							{/* <span className="font-semibold ">{email}</span> */}
 						</CardDescription>
 					</CardHeader>
@@ -81,8 +81,8 @@ export default function VerifyRequest() {
 					<CardContent className="space-y-4">
 						<Alert>
 							<AlertDescription>
-								The link in the email will expire after 24 hours. If you don&apos;t see the email, check your
-								spam folder.
+								Le lien dans l'email expirera après 24 heures. Si vous ne voyez pas l'email, vérifiez votre
+								dossier de spam.
 							</AlertDescription>
 						</Alert>
 
@@ -92,7 +92,7 @@ export default function VerifyRequest() {
 								className="w-full"
 								onClick={() => window.open("https://gmail.com", "_blank")}
 							>
-								Open Gmail
+								Ouvrir Gmail
 								<ArrowRight className="ml-2 h-4 w-4" />
 							</Button>
 							<Button
@@ -100,7 +100,7 @@ export default function VerifyRequest() {
 								className="w-full"
 								onClick={() => window.open("https://outlook.com", "_blank")}
 							>
-								Open Outlook
+								Ouvrir Outlook
 								<ArrowRight className="ml-2 h-4 w-4" />
 							</Button>
 						</div>
@@ -108,7 +108,7 @@ export default function VerifyRequest() {
 
 					{/* <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
-              Didn&apos;t receive the email?
+              Vous n'avez pas reçu l'email ?
             </div>
             <Button
               variant="ghost"
@@ -119,10 +119,10 @@ export default function VerifyRequest() {
               {countdown > 0 ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Resend in {countdown}s
+                  Renvoyer dans {countdown}s
                 </>
               ) : (
-                "Resend verification email"
+                "Renvoyer l'email de vérification"
               )}
             </Button>
           </CardFooter> */}
@@ -130,7 +130,7 @@ export default function VerifyRequest() {
 
 				<div className="text-center">
 					<Button variant="link" className="text-sm text-muted-foreground" onClick={() => router.push("/")}>
-						Use a different email address
+						Utiliser une autre adresse email
 					</Button>
 				</div>
 			</div>
