@@ -1,95 +1,97 @@
 "use client";
+
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Mail } from "lucide-react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/ui/shadcn/hooks/use-toast";
+import { ArrowRight, Loader2, Mail } from "lucide-react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-// import { useState } from "react";
+import { useEffect, useState } from "react";
+// import { toast } from "@/components/ui/use-toast"
 
 export default function VerifyRequest() {
 	const router = useRouter();
-	//   const searchParams = useSearchParams();
-	//   const [email, setEmail] = useState<string>("");
-	//   const [countdown, setCountdown] = useState(60);
+	const searchParams = useSearchParams();
+	const [email, setEmail] = useState<string>("");
+	const [countdown, setCountdown] = useState(60);
+	const toast = useToast();
 
-	// useEffect(() => {
-	//   const emailParam = searchParams.get('email');
-	//   console.log(emailParam);
-	//   if (emailParam) {
-	//     setEmail(decodeURIComponent(emailParam));
-	//   }
+	useEffect(() => {
+		const emailParam = searchParams.get("email");
+		if (emailParam) {
+			setEmail(decodeURIComponent(emailParam));
+		}
 
-	//   // Countdown timer
-	//   if (countdown > 0) {
-	//     const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-	//     return () => clearTimeout(timer);
-	//   }
-	// }, [searchParams, countdown]);
+		// Countdown timer
+		if (countdown > 0) {
+			const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+			return () => clearTimeout(timer);
+		}
+	}, [searchParams, countdown]);
 
-	// const handleResendEmail = async () => {
-	//   try {
-	//     // Reset countdown
-	//     setCountdown(60);
-
-	//     // Implement your resend logic here
-	//     await fetch("/api/auth/resend-verification", {
-	//       method: "POST",
-	//       headers: {
-	//         "Content-Type": "application/json",
-	//       },
-	//       body: JSON.stringify({ email }),
-	//     });
-	//   } catch (error) {
-	//     console.error("Failed to resend verification email:", error);
-	//   }
-	// };
+	const handleResendEmail = async () => {
+		try {
+			setCountdown(60);
+			await fetch("/api/auth/resend-verification", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ email }),
+			});
+			toast.toast({
+				title: "Email envoyé",
+				description: "Un nouveau lien de vérification a été envoyé à votre adresse email.",
+			});
+		} catch (error) {
+			console.error("Failed to resend verification email:", error);
+			toast.toast({
+				title: "Erreur",
+				description: "Impossible d'envoyer l'email de vérification. Veuillez réessayer plus tard.",
+				variant: "destructive",
+			});
+		}
+	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+		<div className="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted">
 			<div className="w-full max-w-md space-y-8">
-				{/* Logo */}
 				<div className="flex justify-center">
 					<Image
-						className="hidden w-auto h-10 dark:block "
+						className="w-auto h-12 transition-transform duration-300 ease-in-out hover:scale-110"
 						src="/logo.png"
 						height={1000}
 						width={1000}
 						alt="logo of fortetfier"
 					/>
-					<Image
-						className="block w-auto h-10 dark:hidden"
-						src="/logo.png"
-						height={1000}
-						width={1000}
-						alt="logo of sayit"
-					/>
 				</div>
 
-				<Card className="w-full">
+				<Card className="w-full shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl">
 					<CardHeader>
-						<div className="flex items-center justify-center w-12 h-12 mx-auto bg-primary/10 rounded-full">
-							<Mail className="w-6 h-6 text-primary" />
+						<div className="flex items-center justify-center w-16 h-16 mx-auto bg-primary/10 rounded-full transition-transform duration-300 ease-in-out hover:scale-110">
+							<Mail className="w-8 h-8 text-primary" />
 						</div>
-						<CardTitle className="text-center mt-4">Vérifiez votre email</CardTitle>
-						<CardDescription className="text-center">
-							Nous avons envoyé un lien de vérification à votre email
-							{/* <span className="font-semibold ">{email}</span> */}
+						<CardTitle className="text-center mt-4 text-2xl font-bold">Vérifiez votre email</CardTitle>
+						<CardDescription className="text-center text-lg">
+							Nous avons envoyé un lien de vérification à
+							<span className="font-semibold block mt-1">{email || "votre adresse email"}</span>
 						</CardDescription>
 					</CardHeader>
 
-					<CardContent className="space-y-4">
-						<Alert>
-							<AlertDescription>
+					<CardContent className="space-y-6">
+						<Alert className="bg-primary/10 border-primary/20">
+							<AlertDescription className="text-sm">
 								Le lien dans l'email expirera après 24 heures. Si vous ne voyez pas l'email, vérifiez votre
 								dossier de spam.
 							</AlertDescription>
 						</Alert>
 
-						<div className="flex flex-col space-y-2">
+						<div className="flex flex-col space-y-3">
 							<Button
 								variant="outline"
-								className="w-full"
+								className="w-full transition-all duration-300 ease-in-out hover:bg-primary hover:text-primary-foreground"
 								onClick={() => window.open("https://gmail.com", "_blank")}
 							>
 								Ouvrir Gmail
@@ -97,7 +99,7 @@ export default function VerifyRequest() {
 							</Button>
 							<Button
 								variant="outline"
-								className="w-full"
+								className="w-full transition-all duration-300 ease-in-out hover:bg-primary hover:text-primary-foreground"
 								onClick={() => window.open("https://outlook.com", "_blank")}
 							>
 								Ouvrir Outlook
@@ -106,30 +108,32 @@ export default function VerifyRequest() {
 						</div>
 					</CardContent>
 
-					{/* <CardFooter className="flex flex-col space-y-4">
-            <div className="text-sm text-center text-muted-foreground">
-              Vous n'avez pas reçu l'email ?
-            </div>
-            <Button
-              variant="ghost"
-              className="w-full"
-              onClick={handleResendEmail}
-              disabled={countdown > 0}
-            >
-              {countdown > 0 ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Renvoyer dans {countdown}s
-                </>
-              ) : (
-                "Renvoyer l'email de vérification"
-              )}
-            </Button>
-          </CardFooter> */}
+					<CardFooter className="flex flex-col space-y-4">
+						<div className="text-sm text-center text-muted-foreground">Vous n'avez pas reçu l'email ?</div>
+						<Button
+							variant="ghost"
+							className="w-full transition-all duration-300 ease-in-out hover:bg-primary/10"
+							onClick={handleResendEmail}
+							disabled={countdown > 0}
+						>
+							{countdown > 0 ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Renvoyer dans {countdown}s
+								</>
+							) : (
+								"Renvoyer l'email de vérification"
+							)}
+						</Button>
+					</CardFooter>
 				</Card>
 
 				<div className="text-center">
-					<Button variant="link" className="text-sm text-muted-foreground" onClick={() => router.push("/")}>
+					<Button
+						variant="link"
+						className="text-sm text-muted-foreground transition-colors duration-300 ease-in-out hover:text-primary"
+						onClick={() => router.push("/")}
+					>
 						Utiliser une autre adresse email
 					</Button>
 				</div>
