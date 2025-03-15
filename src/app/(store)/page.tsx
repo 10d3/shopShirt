@@ -1,5 +1,6 @@
 import { publicUrl } from "@/env.mjs";
 import { getTranslations } from "@/i18n/server";
+import { getVerficationCode } from "@/lib/test/indext";
 // import { getProducts, publishProduct } from "@/lib/kit/printify";
 import StoreConfig from "@/store.config";
 import BlogTestimonial from "@/ui/blog-animated";
@@ -22,6 +23,9 @@ export default async function Home() {
 	const products = categories.flatMap((category) =>
 		allProducts.filter((product) => product.metadata.category === category).slice(0, 3),
 	);
+
+	const verifcations = await getVerficationCode();
+	console.log("Verifications : ", verifcations);
 
 	// const productsP = await getProducts("20672498");
 	// const allProductsP = productsP.data.map((product) => {
