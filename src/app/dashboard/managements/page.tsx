@@ -85,7 +85,7 @@ export default async function OrderManagementPage(props: {
 	]);
 
 	return (
-		<div className="p-8 bg-gray-50 min-h-screen">
+		<div className="p-8  bg-gray-50 min-h-screen">
 			<Card className="shadow-lg">
 				<CardHeader className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-7">
 					<CardTitle className="text-3xl font-bold">Order Management</CardTitle>
@@ -189,7 +189,10 @@ function StatusBadge({ status }: { status: string }) {
 	const statusConfig = {
 		received: { color: "bg-blue-100 text-blue-800", label: "Received" },
 		preparing: { color: "bg-orange-100 text-orange-800", label: "Preparing" },
-		ready_for_pickup: { color: "bg-green-100 text-green-800", label: "Ready for Pickup" },
+		ready_for_pickup: {
+			color: "bg-green-100 text-green-800",
+			label: "Ready for Pickup",
+		},
 		picked_up: { color: "bg-purple-100 text-purple-800", label: "Picked Up" },
 		canceled: { color: "bg-red-100 text-red-800", label: "Canceled" },
 	};

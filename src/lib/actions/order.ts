@@ -2,6 +2,7 @@
 import { resend } from "@/lib/actions/stripe";
 import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/prisma";
+import OrderNotification from "@/ui/templatesEmails/orderNotification";
 // import { pointDeRelais } from "@/lib/utils";
 import OrderStatusEmail from "@/ui/templatesEmails/orderStatusEmail";
 import type { Prisma } from "@prisma/client";
@@ -60,10 +61,31 @@ export const createOrder = async (data: order) => {
 				},
 			},
 		});
+
 		await prisma.verification.update({
 			where: { id: data.verificationId },
 			data: { orderId: test.id, status: "success" },
 		});
+
+		// Prepare order data for email notification
+		const orderDataForEmail: OrderData = {
+			orderNumber: test.id,
+			customerName: user.name || "Client",
+			customerEmail: user.email || "",
+			orderDate: new Date(),
+			orderDetails: {
+				items: data.items.map((item) => ({
+					name: item.productName,
+					quantity: item.quantity,
+					price: item.price,
+				})),
+				total: data.totalAmount,
+			},
+		};
+
+		// Send notification email to admins
+		await sendNotificationToOwner(orderDataForEmail);
+
 		return test;
 	} catch (error) {
 		console.warn(error);
@@ -148,3 +170,45 @@ export async function transformOrderData(order: orderFull) {
 // 		})),
 // 	};
 // }
+
+interface OrderData {
+	orderNumber: string;
+	customerName: string;
+	orderDetails: {
+		items: Array<{
+			name: string;
+			quantity: number;
+			price: number;
+		}>;
+		total: number;
+	};
+	customerEmail: string;
+	orderDate: Date;
+}
+
+const emails = async () => {
+	return prisma.user.findMany({
+		where: { role: "Admin" },
+	});
+};
+export async function sendNotificationToOwner(orderData: OrderData) {
+	try {
+		// Get all admin emails
+		const adminUsers = await emails();
+		const adminEmails = adminUsers.map((user) => user.email);
+
+		if (adminEmails.length === 0) {
+			console.log("No admin users found to send notifications to");
+			return;
+		}
+
+		await resend.emails.send({
+			from: "POS System <pos@fortetfier.com>",
+			to: adminEmails, // Resend supports sending to multiple recipients
+			subject: "New Order",
+			react: OrderNotification({ ...orderData }),
+		});
+	} catch (error) {
+		console.log(error);
+	}
+}
