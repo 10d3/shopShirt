@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 import * as React from "react";
 
 const announcements = [
-	"Fête de Fort-Liberté : Offres Spéciales !",
+	"Fête Saint Joseph : Offres Spéciales !",
 	"Profitez de -14% sur nos maillots, -20% sur nos tasses et -33% sur nos tableaux. Offre limitée !",
 	"Célébrez Fort-Liberté en Grand !",
-	"Maillots à -14%, tasses à -20%, tableaux à -33% : des promos exclusives pour la fête de Fort-Liberté !",
-	"Promo Fête de Fort-Liberté",
-	"Saisissez l'occasion : -14% sur les maillots, -20% sur les tasses et -33% sur les tableaux. Ne manquez pas ces offres !",
+	"Maillots à -14%, tasses à -20%, tableaux à -33% : des promos exclusives pour la fête Saint Joseph !",
+	"Promo Fête Saint Joseph",
+	"Saisissez l'occasion : -14% sur les maillots, -20% sur les tasses et -33% sur les tableaux",
 ];
 
 export function AnnouncementBanner() {
