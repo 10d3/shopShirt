@@ -109,7 +109,9 @@ const PaymentForm = ({
 
 	useDidUpdate(() => {
 		transition(async () => {
-			await saveBillingAddressAction({ billingAddress: debouncedBillingAddress });
+			await saveBillingAddressAction({
+				billingAddress: debouncedBillingAddress,
+			});
 			await elementsRef.current?.fetchUpdates();
 			router.refresh();
 		});
